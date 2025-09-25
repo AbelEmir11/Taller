@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
-# exit on error
 set -o errexit
 
+# FRONTEND
 npm install
 npm run build
 
-pipenv install
+# BACKEND
+pipenv install --deploy --ignore-pipfile
 
-pipenv run upgrade
+# Migraciones de base de datos
+pipenv run flask db upgrade
