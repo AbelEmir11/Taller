@@ -5,13 +5,7 @@ Build web applications using React.js for the front end and python/flask for you
 - Documentation can be found here: https://start.4geeksacademy.com/starters/react-flask
 - Here is a video on [how to use this template](https://www.loom.com/share/f37c6838b3f1496c95111e515e83dd9b)
 - Integrated with Pipenv for package managing.
-- Fast deployment to heroku [in just a few steps here](https://start.4geeksacademy.com/backend/deploy-heroku-posgres).
-- Use of .env file.
-- SQLAlchemy integration for database abstraction.
-
-### 1) Installation:
-
-> If you use Github Codespaces (recommended) or Gitpod this template will already come with Python, Node and the Posgres Database installed. If you are working locally make sure to install Python 3.10, Node 
+- Fast deployment to heroku [in just a few steps here](https://start.4geeksacademy.com/backend/deploy-he use Github Codespaces (recommended) or Gitpod this template will already come with Python, Node and the Posgres Database installed. If you are working locally make sure to install Python 3.10, Node 
 
 It is recomended to install the backend first, make sure you have Python 3.8, Pipenv and a database engine (Posgress recomended)
 
@@ -135,4 +129,10 @@ This boilerplate it's 100% read to deploy with Render.com and Heroku in a matter
 
 This template was built as part of the 4Geeks Academy [Coding Bootcamp](https://4geeksacademy.com/us/coding-bootcamp) by [Alejandro Sanchez](https://twitter.com/alesanchezr) and many other contributors. Find out more about our [Full Stack Developer Course](https://4geeksacademy.com/us/coding-bootcamps/part-time-full-stack-developer), and [Data Science Bootcamp](https://4geeksacademy.com/us/coding-bootcamps/datascience-machine-learning).
 
-You can find other templates and resources like this at the [school github page](https://github.com/4geeksacademy/).
+You can find other templates and resources like this at the [school github page](https://github.com/4geeksacademy/).roku-posgres).
+- Use of .env file.
+- SQLAlchemy integration for database abstraction.
+
+### 1) Installation:
+
+> If you

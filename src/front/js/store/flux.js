@@ -39,7 +39,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           let resp = await fetch(apiUrl + "/pinguser", {
             headers: headers,
           });
-
+          
           if (!resp.ok) {
             localStorage.clear();
             setStore({ token: null, userId: null, roleId: null });
