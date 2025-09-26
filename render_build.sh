@@ -6,7 +6,6 @@ npm install
 npm run build
 
 # BACKEND
-pipenv install --deploy --ignore-pipfile
+pip install -r requirements.txt
 
-# Migraciones de base de datos
-pipenv run flask db upgrade
+
