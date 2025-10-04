@@ -444,9 +444,13 @@ const BookAppointmentUnregisteredUser = () => {
         {error && <p className="error-message">{error}</p>}
         {currentStep === 1 && (
           <div>
-            <h3>Please Enter your Car Details</h3>
+            <h3>
+              Ingresa los detalles de tu coche
+            </h3>
             <div>
-              <label htmlFor="carLicensePlate">Car License Plate</label>
+              <label htmlFor="carLicensePlate">
+                Matrícula del vehiculo
+              </label>
               <input
                 type="text"
                 id="carLicensePlate"
@@ -457,13 +461,13 @@ const BookAppointmentUnregisteredUser = () => {
               />
             </div>
             <div>
-              <label htmlFor="carModel">Car Make & Model</label>
+              <label htmlFor="carModel">Marca y modelo</label>
               <input
                 type="text"
                 id="carModel"
                 value={carModel}
                 onChange={(e) => setCarModel(e.target.value)}
-                placeholder="Enter car make & model"
+                placeholder="Ej: Ford Fiesta"
                 className="form-control"
               />
             </div>
@@ -471,9 +475,9 @@ const BookAppointmentUnregisteredUser = () => {
         )}
         {currentStep === 2 && (
           <div>
-            <h3>Please Select a Service</h3>
+            <h3>PSelecciona un servicio</h3>
             <div>
-              <label htmlFor="service">Service</label>
+              <label htmlFor="service">Servicio</label>
               <select
                 id="service"
                 value={serviceChosen}
@@ -486,7 +490,7 @@ const BookAppointmentUnregisteredUser = () => {
                   }
                 }}
               >
-                <option value="">Select a service</option>
+                <option value="">Selecciona un servicio</option>
                 {services.map((service) => (
                   <option key={service.id} value={service.id}>
                     {service.name}
@@ -498,9 +502,11 @@ const BookAppointmentUnregisteredUser = () => {
         )}
         {currentStep === 3 && (
           <div>
-            <h3>Please Select Appointment Date, Time, and Add a Comment</h3>
+            <h3>
+              Selecciona fecha, hora y añade comentarios si lo deseas
+            </h3>
             <div>
-              <label htmlFor="date">Appointment Date</label>
+              <label htmlFor="date">Fecha del turno</label>
               <DatePicker
                 ref={datePickerRef}
                 format="DD/MM/YYYY HH:mm"
@@ -522,13 +528,13 @@ const BookAppointmentUnregisteredUser = () => {
               />
             </div>
             <div>
-              <label htmlFor="comment">Comments</label>
+              <label htmlFor="comment">Comentarios</label>
               <textarea
                 id="comment"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 rows="4"
-                placeholder="Add a comment"
+                placeholder="Agrega un comentario"
                 className="form-control"
               />
             </div>
@@ -536,25 +542,25 @@ const BookAppointmentUnregisteredUser = () => {
         )}
         {currentStep === 4 && (
           <div>
-            <h3>Sign Up</h3>
+            <h3>Registrarse</h3>
             <div className="appointment-description">
-              To confirm your appointment with us, we kindly ask that you create
-              an account by providing your full name, email address, phone
-              number and a password.
+            Para confirmar su turno, le pedimos 
+            que cree una cuenta proporcionando su nombre completo, 
+            dirección de correo electrónico, número de teléfono y una contraseña.
             </div>
             <div>
-              <label htmlFor="name">Full Name</label>
+              <label htmlFor="name">Nombre completo</label>
               <input
                 type="text"
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Enter your full name"
+                placeholder="Juan Perez"
                 className="form-control"
               />
             </div>
             <div>
-              <label htmlFor="email">Email Address</label>
+              <label htmlFor="email">Email</label>
               <input
                 type="email"
                 id="email"
@@ -565,24 +571,24 @@ const BookAppointmentUnregisteredUser = () => {
               />
             </div>
             <div>
-              <label htmlFor="phoneNumber">Phone Number</label>
+              <label htmlFor="phoneNumber">NUmero de telefono</label>
               <input
                 type="tel"
                 id="phoneNumber"
                 value={phoneNumber}
                 onChange={requirePhoneNumber}
-                placeholder="Enter your phone number"
+                placeholder="261234567"
                 className="form-control"
               />
             </div>
             <div>
-              <label htmlFor="password">Create Password</label>
+              <label htmlFor="password">Crea una contraseña</label>
               <input
                 type="password"
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Create a password"
+                placeholder="debe contener al menos 6 caracteres"
                 className="form-control"
               />
             </div>
@@ -591,32 +597,32 @@ const BookAppointmentUnregisteredUser = () => {
         {currentStep === 5 && (
           <div className="appointment-summary-container">
             <div>
-              <h3>Appointment Summary</h3>
+              <h3>Resumen</h3>
               <p>
-                <strong>Car License Plate:</strong> {carLicensePlate}
+                <strong>matricula del vehiculo:</strong> {carLicensePlate}
               </p>
               <p>
-                <strong>Car Make & Model:</strong> {carModel}
+                <strong>Marca y modelo:</strong> {carModel}
               </p>
               <p>
-                <strong>Service:</strong> {serviceName}
+                <strong>Servicio:</strong> {serviceName}
               </p>
               <p>
-                <strong>Appointment Date:</strong>{" "}
+                <strong>Fecha del turno: </strong>{" "}
                 {appointmentDate ? appointmentDate.format("DD/MM/YYYY") : ""}
               </p>
               <p>
-                <strong>Appointment Time:</strong>{" "}
+                <strong>Hora del turno:</strong>{" "}
                 {appointmentDate ? appointmentDate.format("HH:mm") : ""}
               </p>
               <p>
-                <strong>Comments:</strong> {comment}
+                <strong>Comentarios:</strong> {comment}
               </p>
               <p>
-                <strong>Email Address:</strong> {email}
+                <strong>Email:</strong> {email}
               </p>
               <p>
-                <strong>Phone Number:</strong> {phoneNumber}
+                <strong>Numero de telefono:</strong> {phoneNumber}
               </p>
             </div>
           </div>
@@ -629,7 +635,7 @@ const BookAppointmentUnregisteredUser = () => {
     <div id="content" className="padding-nonuser">
       <div className="card shadow-sm nonuser">
         <div className="card-header text-center nonuser">
-          Appointment Booking
+         Reserva de turno
         </div>
         <form
           onSubmit={
@@ -654,7 +660,7 @@ const BookAppointmentUnregisteredUser = () => {
                 className="btn btn-secondary previous-button"
                 onClick={() => setCurrentStep(currentStep - 1)}
               >
-                Previous
+                anterior
               </button>
             )}
             {currentStep < 5 && (
@@ -662,7 +668,7 @@ const BookAppointmentUnregisteredUser = () => {
                 className="btn btn-primary next-button"
                 onClick={nextStep}
               >
-                Next
+                siguiente
               </button>
             )}
           </div>
@@ -674,14 +680,14 @@ const BookAppointmentUnregisteredUser = () => {
               className="btn btn-secondary previous-button"
               onClick={() => setCurrentStep(currentStep - 1)}
             >
-              Previous
+              anterior
             </button>
             <button
               className="btn btn-primary nonuser"
               type="submit"
               onClick={confirmAccountAndAppointment}
             >
-              Create Account and Submit
+            Crear cuenta y confirmar turno  
             </button>
           </div>
         )}

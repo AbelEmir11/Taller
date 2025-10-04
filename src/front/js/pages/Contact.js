@@ -25,7 +25,7 @@ const Contact = () => {
                 onClick={handleEmailClick}
                 className="btn btn-primary w-100 p-3 fw-bold"
               >
-                Contact by email click here
+                Contacta con nosotros
               </button>
               <img src={heroImg} className="img-fluid mb-3 mb-lg-0 imgContact" alt="" />
             </div>
