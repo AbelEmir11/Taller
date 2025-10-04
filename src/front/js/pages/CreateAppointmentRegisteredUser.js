@@ -77,13 +77,13 @@ const CreateAppointmentRegisteredUser = () => {
           setUserCars(result);
         } else {
           console.error(
-            "No valid car data received or user has no cars",
+            "No se recibieron datos válidos del coche o el usuario no tiene coches",
             msg,
             result
           );
         }
       } catch (error) {
-        console.error("Error getting user cars:", error);
+        console.error("Error al obtener los coches del usuario:", error);
       }
     };
 
@@ -117,7 +117,7 @@ const CreateAppointmentRegisteredUser = () => {
     (service) => service.id === parseInt(serviceChosen, 10)
   );
 
-  const serviceName = selectedService ? selectedService.name : "Not selected";
+  const serviceName = selectedService ? selectedService.name : "No seleccionado";
 
   //------------------------------------------------------------------------------------ manejo horario laboral
   const disabledDate = (current) => {
@@ -222,18 +222,18 @@ const CreateAppointmentRegisteredUser = () => {
 
   const nextStep = async () => {
     if (currentStep === 1 && !carId && (!carLicensePlate || !carModel)) {
-      setError("Please select a car or add a new one.");
+      setError("Por favor, seleccione un coche o agregue uno nuevo.");
       return;
     }
     if (currentStep === 2 && !serviceChosen) {
-      setError("Service required. Please select one from the list.");
+      setError("Servicio requerido. Por favor, seleccione uno de la lista.");
       return;
     }
     await fetchTakenSlots();
     if (currentStep === 3) {
       if (!appointmentDate) {
         setError(
-          "Appointment date is required. Please select one from the calendar."
+          "Se requiere la fecha del turno. Por favor, seleccione uno del calendario."
         );
         return;
       }
@@ -581,7 +581,7 @@ const CreateAppointmentRegisteredUser = () => {
   return (
     <div id="content" className="padding">
       <div className="card shadow-sm">
-        <div className="card-header text-center">Appointment Booking</div>
+        <div className="card-header text-center">Reserva de turnos</div>
         <form
           onSubmit={
             currentStep === 4 ? confirmAppointment : (e) => e.preventDefault()
@@ -602,12 +602,12 @@ const CreateAppointmentRegisteredUser = () => {
               className="btn btn-secondary"
               onClick={() => setCurrentStep(currentStep - 1)}
             >
-              Previous
+              Anterior
             </button>
           )}
           {currentStep < 4 && (
             <button className="btn btn-primary ms-auto" onClick={nextStep}>
-              Next
+              Proximo
             </button>
           )}
           {currentStep === 4 && (
@@ -615,7 +615,7 @@ const CreateAppointmentRegisteredUser = () => {
               className="btn btn-primary ml-auto"
               onClick={confirmAppointment}
             >
-              Confirm Appointment
+              Confirmar
             </button>
           )}
         </div>

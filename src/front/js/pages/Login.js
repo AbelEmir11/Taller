@@ -63,7 +63,9 @@ const Login = () => {
       <div className="col-md-5">
         <div className="card">
           <div className="card-header">
-            <strong>Login to your account</strong>
+            <strong>
+              Inicia sesión en tu cuenta
+            </strong>
           </div>
           <div className="card-body">
             <form onSubmit={submitForm}>
@@ -74,7 +76,7 @@ const Login = () => {
               )}
               <div className="form-group">
                 <label className="text-muted" htmlFor="inputEmail">
-                  Email address
+                  Correo electrónico
                 </label>
                 <input
                   name="inputEmail"
@@ -82,25 +84,26 @@ const Login = () => {
                   className="form-control"
                   id="InputEmail1"
                   aria-describedby="emailHelp"
-                  placeholder="Enter email"
+                  placeholder="Ingresa tu email"
                 />
                 <small id="emailHelp" className="form-text text-muted">
-                  We don't share email with anyone
+                no compartiremos tu email con nadie más.
                 </small>
               </div>
               <div className="form-group">
                 <label className="text-muted" htmlFor="inputPassword">
-                  Password
+                  Contraseña
                 </label>
                 <input
                   name="inputPassword"
                   type="password"
                   className="form-control"
                   id="inputPassword"
-                  placeholder="Password"
+                  placeholder="Contraseña"
                 />
                 <small id="passwordHelp" className="form-text text-muted">
-                  Your password is saved in encrypted form
+                  
+                 Tu contraseña debe tener al menos 8 caracteres.
                 </small>
               </div>
               <div className="form-group mt-2">
@@ -109,11 +112,11 @@ const Login = () => {
                   role="button"
                   onClick={handleForgotPasswordModalOpen}
                 >
-                  Forgot your password?
+                  Olvidaste tu contraseña?
                 </span>
               </div>
               <button type="submit" className="btn btn-primary mt-3">
-                Submit
+                Enviar
               </button>
             </form>
           </div>

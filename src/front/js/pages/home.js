@@ -27,22 +27,23 @@ export const Home = () => {
           <div className="row gy-4 d-flex justify-content-between">
             <div className="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
               <h2 data-aos="fade-up" className="aos-init aos-animate">
-                Your Trusted Auto Repair Workshop
+                Tu taller de confianza para el mantenimiento y reparación de vehículos
               </h2>
               <p
                 data-aos="fade-up"
                 data-aos-delay="100"
                 className="aos-init aos-animate"
               >
-                Keep your vehicle in top shape. Book appointments easily and
-                manage your car maintenance effortlessly with us. We're your
-                reliable partner for all auto repair needs.
+                En nuestro taller, nos dedicamos a ofrecer
+                 servicios de alta calidad para el mantenimiento y reparación de vehículos. 
+                 Con un equipo de técnicos expertos y un compromiso con la satisfacción 
+                 del cliente, garantizamos que tu vehículo esté en las mejores manos.
               </p>
               <button
                 onClick={() => navigate("/bookappointment")}
                 className="btn btn-primary w-100 p-3 fw-bold"
               >
-                Book Your Appointment at Our Trusted Workshop
+                Reserva tu cita ahora
               </button>
               <div
                 className="row gy-4 aos-init aos-animate"
@@ -52,19 +53,21 @@ export const Home = () => {
                 <div className="col-lg-6 col-md-6 col-6 mx-auto my-3">
                   <div className="stats-item text-center w-100 h-100">
                     <span>{happyClients}</span>
-                    <p>Happy Clients</p>
+                    <p>Clientes satisfechos</p>
                   </div>
                 </div>
                 <div className="col-lg-6 col-md-6 col-6 mx-auto my-3">
                   <div className="stats-item text-center w-100 h-100">
                     <span>{scheduledServices}</span>
-                    <p>Scheduled Services</p>
+                    <p>
+                      Servicios programados
+                    </p>
                   </div>
                 </div>
                 <div className="col-lg-6 col-md-6 col-6 mx-auto my-3">
                   <div className="stats-item text-center w-100 h-100">
                     <span>{yearsOfExperience}</span>
-                    <p>Years of Experience</p>
+                    <p>Años de experiencia nos avalan</p>
                   </div>
                 </div>
               </div>
