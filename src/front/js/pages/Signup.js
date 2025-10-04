@@ -118,26 +118,27 @@ const Signup = () => {
       <div className="col-md-5">
         <div className="card">
           <div className="card-header">
-            <strong>Create a new account</strong>
+            <strong>
+              Crear una nueva cuenta </strong>
           </div>
           <div className="card-body">
             <form onSubmit={submitForm}>
               {error && <div className="alert alert-danger">{error}</div>}
               <div className="form-group">
                 <label className="text-muted mt-1" htmlFor="inputName">
-                  Name
+                  Nombre
                 </label>
                 <input
                   name="inputName"
                   type="text"
                   className="form-control"
                   id="inputName"
-                  placeholder="Full Name"
+                  placeholder="Nombre completo"
                 />
               </div>
               <div className="form-group">
                 <label className="text-muted mt-1" htmlFor="inputEmail">
-                  Email address
+                  Email
                 </label>
                 <input
                   name="inputEmail"
@@ -147,24 +148,24 @@ const Signup = () => {
                   placeholder="Email"
                 />
                 <small id="emailHelp" className="form-text text-muted">
-                  We don't share your email with anyone
+
                 </small>
               </div>
               <div className="form-group">
                 <label className="text-muted mt-1" htmlFor="inputPhone_number">
-                  Phone Number
+                  Numero de telefono
                 </label>
                 <input
                   name="inputPhone_number"
                   type="text"
                   className="form-control"
                   id="inputPhone_number"
-                  placeholder="Phone Number"
+                  placeholder="numero de telefono"
                 />
               </div>
               <div className="form-group">
                 <label className="text-muted mt-1" htmlFor="inputPassword">
-                  Password
+                  Contraseña
                 </label>
                 <input
                   name="inputPassword"
@@ -174,7 +175,8 @@ const Signup = () => {
                   placeholder="Enter Password"
                 />
                 <small id="passwordHelp" className="form-text text-muted">
-                  Your password is saved in encrypted form
+                  Tu contraseña debe tener al menos 6 caracteres.
+                  
                 </small>
               </div>
               <div className="form-group">
@@ -182,18 +184,18 @@ const Signup = () => {
                   className="text-muted mt-1"
                   htmlFor="inputConfirmPassword"
                 >
-                  Confirm Password
+                  Confirmar contraseña
                 </label>
                 <input
                   name="inputConfirmPassword"
                   type="password"
                   className="form-control"
                   id="inputConfirmPassword"
-                  placeholder="Re-enter Password"
+                  placeholder="Repita la misma contraseña"
                 />
               </div>
               <button type="submit" className="btn btn-primary mt-3">
-                Sign Up
+           Registrarse
               </button>
             </form>
           </div>
