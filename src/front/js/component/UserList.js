@@ -149,32 +149,32 @@ function UserList() {
 
   return (
     <div className="user-list">
-      <h2>User List</h2>
+      <h2>Lista de usuarios</h2>
       <div className="table-responsive">
         <table className="table table-striped table-bordered">
           <thead>
             <tr>
               <th>
                 <button type="button" onClick={() => requestSort('lastAppointmentDate')} className="btn-light btn-link p-0">
-                  Date {sortConfig.key === 'lastAppointmentDate' && (sortConfig.direction === 'ascending' ? '▲' : '▼')}
+                  Fecha {sortConfig.key === 'lastAppointmentDate' && (sortConfig.direction === 'ascending' ? '▲' : '▼')}
                 </button>
               </th>
               <th>
                 <button type="button" onClick={() => requestSort('lastAppointmentStatus')} className="btn-light btn-link p-0">
-                  Status {sortConfig.key === 'lastAppointmentStatus' && (sortConfig.direction === 'ascending' ? '▲' : '▼')}
+                  Estado {sortConfig.key === 'lastAppointmentStatus' && (sortConfig.direction === 'ascending' ? '▲' : '▼')}
                 </button>
               </th>
               <th>
                 <button type="button" onClick={() => requestSort('name')} className="btn-light btn-link p-0">
-                  Client Name {sortConfig.key === 'name' && (sortConfig.direction === 'ascending' ? '▲' : '▼')}
+                 Nombre del cliente {sortConfig.key === 'name' && (sortConfig.direction === 'ascending' ? '▲' : '▼')}
                 </button>
               </th>
-              <th>Phone Number</th>
+              <th>Numero de telefono</th>
               <th>Email</th>
-              <th>Number of Vehicles</th>
-              <th>Number of Appointments</th>
-              <th>Comments</th>
-              <th>Actions</th>
+              <th>Numero de Vehiculos</th>
+              <th>Numero de turnos</th>
+              <th>Comentarios</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -189,8 +189,8 @@ function UserList() {
                 <td>{user.appointments.length}</td>
                 <td>{user.comments.length}</td>
                 <td>
-                  <button className="btn btn-primary" onClick={() => handleViewProfile(user)}>View Profile</button>
-                  <button className="btn btn-danger ms-2" onClick={() => handleDeleteClick(user)}>Delete Client</button>
+                  <button className="btn btn-primary" onClick={() => handleViewProfile(user)}>Ver perfil</button>
+                  <button className="btn btn-danger ms-2" onClick={() => handleDeleteClick(user)}>Borrar cliente</button>
                 </td>
               </tr>
             ))}
@@ -205,15 +205,15 @@ function UserList() {
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Confirm Deletion</h5>
+                <h5 className="modal-title">Confirmar borrado</h5>
                 <button type="button" className="btn-close" onClick={() => setShowConfirmModal(false)}></button>
               </div>
               <div className="modal-body">
-                <p>Are you sure you want to delete {userToDelete?.name}?</p>
+                <p>Esta seguro de eliminar este cliente? {userToDelete?.name}?</p>
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={() => setShowConfirmModal(false)}>Cancel</button>
-                <button type="button" className="btn btn-danger" onClick={confirmDelete}>Delete</button>
+                <button type="button" className="btn btn-secondary" onClick={() => setShowConfirmModal(false)}>Cancelar</button>
+                <button type="button" className="btn btn-danger" onClick={confirmDelete}>Borrar</button>
               </div>
             </div>
           </div>

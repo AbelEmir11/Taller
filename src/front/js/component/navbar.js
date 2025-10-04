@@ -90,7 +90,7 @@ export const Navbar = () => {
                   className="nav-link"
                   onClick={handleNavCollapse}
                 >
-                  Book an Appointment
+                  Reservar una cita
                 </Link>
               )}
               {userRole === "User" && (
@@ -99,7 +99,7 @@ export const Navbar = () => {
                   className="nav-link"
                   onClick={handleNavCollapse}
                 >
-                  Create New Appointment
+                  Crear nueva cita
                 </Link>
               )}
             </li>
@@ -109,7 +109,7 @@ export const Navbar = () => {
                 className="nav-link"
                 onClick={handleNavCollapse}
               >
-                Contact
+                Contacto
               </Link>
             </li>
           </ul>
@@ -121,14 +121,14 @@ export const Navbar = () => {
                   className="btn btn-primary me-2"
                   onClick={handleNavCollapse}
                 >
-                  Login
+                 Ingresar
                 </Link>
                 <Link
                   to="/signup"
                   className="btn btn-primary"
                   onClick={handleNavCollapse}
                 >
-                  Signup
+                  Registrarse
                 </Link>
               </>
             )}
@@ -139,16 +139,16 @@ export const Navbar = () => {
                   className="btn btn-secondary me-2"
                   onClick={handleNavCollapse}
                 >
-                  Dashboard
+                  Panel
                 </Link>
                 <button onClick={handleLogout} className="btn btn-primary">
-                  Logout
+                  Salir
                 </button>
                 <div className="row">
                   <div className="profile-header-container">
                     <div className="role-label-container">
                       <span className="label label-default role-label">
-                        User
+                        Usuario
                       </span>
                     </div>
                   </div>
@@ -162,16 +162,16 @@ export const Navbar = () => {
                   className="btn btn-secondary me-2"
                   onClick={handleNavCollapse}
                 >
-                  Dashboard
+                  Panel
                 </Link>
                 <button onClick={handleLogout} className="btn btn-primary">
-                  Logout
+                  Salir
                 </button>
                 <div className="row">
                   <div className="profile-header-container">
                     <div className="role-label-container">
                       <span className="label label-default role-label">
-                        Mechanic
+                        Mecanico
                       </span>
                     </div>
                   </div>
@@ -185,10 +185,10 @@ export const Navbar = () => {
                   className="btn btn-secondary me-2"
                   onClick={handleNavCollapse}
                 >
-                  Dashboard
+                 Panel
                 </Link>
                 <button onClick={handleLogout} className="btn btn-primary">
-                  Logout
+                  Salir
                 </button>
                 <div className="row">
                   <div className="profile-header-container">

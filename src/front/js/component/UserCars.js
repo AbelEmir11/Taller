@@ -177,7 +177,7 @@ function UserCars() {
 
   return (
     <div className="user-cars">
-      <h2 className="fw-bolder text-dark p-3">My Cars</h2>
+      <h2 className="fw-bolder text-dark p-3">Mis vehiculos</h2>
       <button className="btn btn-primary mb-3" onClick={handleAddModalOpen}>
         Add Car
       </button>
@@ -185,16 +185,16 @@ function UserCars() {
         <table className="table table-striped table-bordered">
           <thead>
             <tr>
-              <th>Model</th>
-              <th>License Plate</th>
-              <th>Actions</th>
+              <th>Marca y modelo</th>
+              <th>Patente</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {cars.length === 0 ? (
               <tr>
                 <td colSpan="3" className="text-center">
-                  No vehicles registered
+                  No hay vehiculos agregados.
                 </td>
               </tr>
             ) : (
@@ -207,13 +207,13 @@ function UserCars() {
                       className="btn btn-primary"
                       onClick={() => handleEditModalOpen(car)}
                     >
-                      Edit
+                      Editar
                     </button>
                     <button
                       className="btn btn-danger ms-2"
                       onClick={() => handleDeleteClick(car.id)}
                     >
-                      Delete
+                      Borrar
                     </button>
                   </td>
                 </tr>
@@ -247,7 +247,7 @@ function UserCars() {
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Confirm Deletion</h5>
+                <h5 className="modal-title">Confirmar</h5>
                 <button
                   type="button"
                   className="btn-close"
@@ -255,7 +255,7 @@ function UserCars() {
                 ></button>
               </div>
               <div className="modal-body">
-                <p>Are you sure you want to delete this car?</p>
+                <p>Esta seguro de querer quitar este vehiculo de su panel?</p>
                 {error && <div className="alert alert-danger">{error}</div>}
               </div>
               <div className="modal-footer">
@@ -271,7 +271,7 @@ function UserCars() {
                   className="btn btn-danger"
                   onClick={confirmDelete}
                 >
-                  Yes, Delete
+                  Si, borrar
                 </button>
               </div>
             </div>

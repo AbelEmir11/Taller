@@ -32,7 +32,7 @@ const UserProfileView = ({ user, onClose }) => {
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">User Profile</h5>
+            <h5 className="modal-title">Perfil de usuario</h5>
             <button
               type="button"
               className="btn-close"
@@ -44,10 +44,10 @@ const UserProfileView = ({ user, onClose }) => {
               <strong>ID:</strong> {user.id || "N/A"}
             </p>
             <p>
-              <strong>Name:</strong> {user.name || "N/A"}
+              <strong>Nombre:</strong> {user.name || "N/A"}
             </p>
             <p>
-              <strong>Vehicles:</strong>
+              <strong>Vehiculos:</strong>
             </p>
             {cars.length > 0 ? (
               <ul>
@@ -59,10 +59,10 @@ const UserProfileView = ({ user, onClose }) => {
                 ))}
               </ul>
             ) : (
-              <p>No vehicles found.</p>
+              <p>No hay vehiculos guardados.</p>
             )}
             <p>
-              <strong>Latest Appointments:</strong>
+              <strong>Ultimos turnos:</strong>
             </p>
             {latestAppointments.length > 0 ? (
               <ul>
@@ -75,10 +75,10 @@ const UserProfileView = ({ user, onClose }) => {
                 ))}
               </ul>
             ) : (
-              <p>No recent appointments.</p>
+              <p>No hay turnos recientes.</p>
             )}
             <p>
-              <strong>Comments:</strong>
+              <strong>Comentarios:</strong>
             </p>
             {comments.length > 0 ? (
               <>
@@ -97,12 +97,12 @@ const UserProfileView = ({ user, onClose }) => {
                 </ul>
                 {commentsToShow < comments.length && (
                   <button className="btn btn-light btn-link" onClick={handleLoadMoreComments}>
-                    Load More
+                   Ver mas
                   </button>
                 )}
               </>
             ) : (
-              <p>No comments found.</p>
+              <p>No se encontraron comentarios.</p>
             )}
           </div>
           <div className="modal-footer">
@@ -111,7 +111,7 @@ const UserProfileView = ({ user, onClose }) => {
               className="btn btn-secondary"
               onClick={onClose}
             >
-              Close
+              Cerrar
             </button>
           </div>
         </div>

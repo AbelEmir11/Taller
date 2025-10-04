@@ -8,13 +8,14 @@ const ForgotPasswordModal = ({ isOpen, onClose }) => {
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Forgot Password</h5>
+                        <h5 className="modal-title">Olvidaste tu contraseña?</h5>
                         <button type="button" className="close" onClick={onClose}>
                             <span>&times;</span>
                         </button>
                     </div>
                     <div className="modal-body">
-                        <p>Please contact the administrator to restore your password.</p>
+                        <p>Ponte en contacto con l administrador del sitio web 
+                            para restaurar tu contraseña.</p>
                     </div>
                 </div>
             </div>

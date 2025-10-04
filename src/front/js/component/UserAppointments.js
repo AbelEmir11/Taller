@@ -178,24 +178,24 @@ function UserAppointments() {
 
   return (
     <div className="user-appointments">
-      <h2 className="fw-bolder text-dark py-3">My Appointments</h2>
+      <h2 className="fw-bolder text-dark py-3">Mis turnos</h2>
       <button
         onClick={() => navigate("/createappointmentregistereduser")}
         className="btn btn-primary mb-3"
       >
-        Create New Appointment
+        Solicitar nuevo turno
       </button>
       <div className="table-responsive">
         <table className="table table-striped table-bordered">
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Service</th>
-              <th>Car</th>
-              <th>Status</th>
-              <th>Comments</th>
-              <th>Add Comment</th>
+              <th>Fecha</th>
+              <th>Hora</th>
+              <th>Servicio</th>
+              <th>Vehiculo</th>
+              <th>Estado</th>
+              <th>Comentarios</th>
+              <th>Agregar comentario</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -203,7 +203,7 @@ function UserAppointments() {
             {appointments.length === 0 ? (
               <tr>
                 <td colSpan="8" className="text-center">
-                  You have no scheduled appointments or appointment history.
+                  No tienes turnos programados.
                 </td>
               </tr>
             ) : (
@@ -246,7 +246,7 @@ function UserAppointments() {
                       className="btn btn-secondary mt-2"
                       onClick={() => handleAddComment(app.id)}
                     >
-                      Add Comment
+                      Agregar comentarios
                     </button>
                   </td>
                   <td>
@@ -256,7 +256,7 @@ function UserAppointments() {
                         className="btn btn-danger ms-2"
                         onClick={() => handleCancelClick(app.id)}
                       >
-                        Cancel
+                        Cancelar
                       </button>
                     )}
                   </td>
@@ -276,7 +276,7 @@ function UserAppointments() {
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Confirm Cancellation</h5>
+                <h5 className="modal-title">Confirmar cancelacion</h5>
                 <button
                   type="button"
                   className="btn-close"
@@ -284,7 +284,7 @@ function UserAppointments() {
                 ></button>
               </div>
               <div className="modal-body">
-                <p>Are you sure you want to cancel this appointment?</p>
+                <p>Estas seguro de cancelar el turno?</p>
               </div>
               <div className="modal-footer">
                 <button
@@ -299,7 +299,7 @@ function UserAppointments() {
                   className="btn btn-danger"
                   onClick={confirmCancel}
                 >
-                  Yes, Cancel
+                  Si, cancelar
                 </button>
               </div>
             </div>

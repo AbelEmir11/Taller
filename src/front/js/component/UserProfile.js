@@ -83,18 +83,18 @@ const UserProfile = () => {
 
   return (
     <div className="user-profile">
-      <h2>Profile</h2>
+      <h2>Perfil</h2>
       <div>
-        <p>Name: {profile.name}</p>
-        <p>Phone Number: {profile.phoneNumber}</p>
+        <p>Nombre: {profile.name}</p>
+        <p>Numero de telefono: {profile.phoneNumber}</p>
         <p>Email: {profile.email}</p>
-        <p>Password: {profile.password}</p>
+        <p>Contraseña: {profile.password}</p>
       </div>
       <button
         className="btn btn-secondary btnSetting"
         onClick={handleProfileModalOpen}
       >
-        Edit
+        Editar
       </button>
       {isProfileModalOpen && (
         <UserProfileModal

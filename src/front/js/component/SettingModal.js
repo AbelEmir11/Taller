@@ -44,7 +44,7 @@ function SettingModal({ onClose, currentValue, onSave }) {
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Edit Max Appointments per Hour</h5>
+            <h5 className="modal-title">Editar cantidad maxima de turnos por hora</h5>
             <button type="button" className="btn-close" onClick={() => onClose()}></button>
           </div>
           <div className="modal-body">
@@ -65,8 +65,8 @@ function SettingModal({ onClose, currentValue, onSave }) {
             {error && <div className="alert alert-danger mt-2">{error}</div>}
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" onClick={() => onClose()}>Cancel</button>
-            <button type="button" className="btn btn-primary" onClick={handleSave}>Save</button>
+            <button type="button" className="btn btn-secondary" onClick={() => onClose()}>Cancelar</button>
+            <button type="button" className="btn btn-primary" onClick={handleSave}>Guardar</button>
           </div>
         </div>
       </div>

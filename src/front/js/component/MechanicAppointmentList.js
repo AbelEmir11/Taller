@@ -81,18 +81,18 @@ function MechanicAppointmentList() {
 
   return (
     <div className="mechanic-appointments">
-      <h2 className="fw-bolder text-dark py-3 text-center">My Appointments</h2>
+      <h2 className="fw-bolder text-dark py-3 text-center">Mis turnos asignados </h2>
       <div className="table-responsive">
         <table className="table table-striped table-bordered">
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Service</th>
-              <th>Vehicle</th>
-              <th>Client</th>
-              <th>Status</th>
-              <th>Comments</th>
+              <th>Fecha</th>
+              <th>Hora</th>
+              <th>Servicio</th>
+              <th>Vehiculo</th>
+              <th>Cliente</th>
+              <th>Estado</th>
+              <th>Comentarios</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -109,9 +109,9 @@ function MechanicAppointmentList() {
                     value={app.status} 
                     onChange={(e) => handleStatusChange(app.id, e.target.value)}
                   >
-                    <option value="Pending">Pending</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Completed">Completed</option>
+                    <option value="Pending">Pendiente</option>
+                    <option value="In Progress">En progreso</option>
+                    <option value="Completed">Completado</option>
                   </select>
                 </td>
                 <td>{app.comments?.length || 0}</td>
@@ -120,7 +120,7 @@ function MechanicAppointmentList() {
                     className="btn btn-primary" 
                     onClick={() => handleViewDetails(app.id)}
                   >
-                    View Details
+                    Ver detalles
                   </button>
                 </td>
               </tr>
