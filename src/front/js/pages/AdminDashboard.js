@@ -169,16 +169,15 @@ const AdminDashboard = () => {
   return (
     <div className="container py-5">
       <div className="d-flex flex-column dashboard">
-        <h1>Admin Dashboard</h1>
+        <h1>Panel de administrador</h1>
         {!hasAccess ? (
           <div className="card p-5">
             <div className="card-body mx-auto">
               <h2 className="card-title">
-                You do not have access to this section
+                Tu cuenta no tiene acceso a esta página
               </h2>
               <p className="card-text mt-3">
-                You must log in as a registered Admin to view the content of
-                this page.
+                Por favor, contacta al administrador del sistema.           
               </p>
             </div>
           </div>
@@ -187,38 +186,38 @@ const AdminDashboard = () => {
             <div className="stats row">
               <div className="stat1 col mx-2">
                 <img src={iconUser} alt="Total Clients" />
-                <h3>Total Clients</h3>
+                <h3>Total clientes</h3>
                 <p>{clientCount}</p>
               </div>
               <div className="stat2 col mx-2">
                 <img src={iconComments} alt="Total Appointments" />
-                <h3>Total Appointments</h3>
+                <h3>Total turnos</h3>
                 <p>{appointmentsCount}</p>
               </div>
               <div className="stat3 col mx-2">
                 <img src={iconBriefcase} alt="Total Services" />
-                <h3>Total Services</h3>
+                <h3>Total Servicios</h3>
                 <p>{servicesCount}</p>
               </div>
               <div className="stat4 col mx-2">
                 <img src={iconFavorites} alt="Total Cars" />
-                <h3>Total Cars</h3>
+                <h3>Total vehiculos</h3>
                 <p>{carsCount}</p>
               </div>
               <div className="stat5 col mx-2">
                 <img src={iconConnect} alt="Settings" />
-                <h3>Settings</h3>
-                <p>Max Appointments per Hour: {maxAppointmentsPerHour}</p>
+                <h3>Ajustes</h3>
+                <p>Maximo de turnos por hora: {maxAppointmentsPerHour}</p>
                 <button
                   className="btn btn-secondary btnSetting"
                   onClick={handleSettingModalOpen}
                 >
-                  Edit
+                  Editar
                 </button>
               </div>
               <div className="stat5 col mx-2">
                 <img src={iconConnect} alt="Profile" />
-                <h3>Profile</h3>
+                <h3>Perfil</h3>
                 <div>
                   <p>Email: {profile.email}</p>
                 </div>
@@ -226,7 +225,7 @@ const AdminDashboard = () => {
                   className="btn btn-secondary btnSetting"
                   onClick={handleProfileModalOpen}
                 >
-                  Edit
+                  Editar
                 </button>
               </div>
             </div>

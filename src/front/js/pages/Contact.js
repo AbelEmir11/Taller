@@ -34,7 +34,7 @@ const Contact = () => {
               data-aos="zoom-out"
             >
               <h2 data-aos="fade-up" className="aos-init aos-animate">
-                Repair Workshop
+                Nuestra ubicacion
               </h2>
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d179.57283464912325!2d-6.233494991739129!3d53.33863809049381!2m3!1f0!2f44.96106715296226!3f0!3m2!1i1024!2i768!4f35!3m3!1m2!1s0x48670eebbdb7aaab%3A0x906808e57905dbe!2s16%20Gordon%20St%2C%20Dublin%204%2C%20D04%20FD90%2C%20Irlanda!5e1!3m2!1ses!2ses!4v1722956195920!5m2!1ses!2ses"

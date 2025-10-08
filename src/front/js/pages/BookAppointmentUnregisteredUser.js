@@ -80,7 +80,7 @@ const BookAppointmentUnregisteredUser = () => {
 
   const serviceName = selectedService ? selectedService.name : "Not selected";
 
-  //------------------------------------------------------------------------------------ manejo horario laboral
+  //manejo horario laboral
   const disabledDate = (current) => {
     return (
       current &&

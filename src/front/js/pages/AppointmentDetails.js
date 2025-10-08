@@ -150,10 +150,11 @@ const AppointmentDetails = () => {
   return (
     <>
       <div className="container pt-5">
-        <h1 className="text-center">Appointment Details</h1>
+        <h1 className="text-center">Detalles del turno
+        </h1>
         <div className="text-end">
           <button className="btn btn-secondary mb-3" onClick={handleBackClick}>
-            Back to Dashboard
+         volver al panel
           </button>
         </div>
       </div>
@@ -161,16 +162,16 @@ const AppointmentDetails = () => {
         <div className="row justify-content-md-center">
           <div className="col-5">
             <div className="appointment-details">
-              <p><strong>Date:</strong> {new Date(appointment.date).toLocaleDateString()}</p>
-              <p><strong>Time:</strong> {new Date(appointment.date).toLocaleTimeString()}</p>
-              <p><strong>Service:</strong> {service ? service.name : "Service data unavailable"}</p>
-              <p><strong>Vehicle:</strong> {car ? car.car_model : "Car data unavailable"}</p>
-              <p><strong>Client:</strong> {user ? user.name : "Client data unavailable"}</p>
-              <p><strong>Status:</strong> {appointment.status}</p>
+              <p><strong>Fecha:</strong> {new Date(appointment.date).toLocaleDateString()}</p>
+              <p><strong>Hora:</strong> {new Date(appointment.date).toLocaleTimeString()}</p>
+              <p><strong>Servicio:</strong> {service ? service.name : "Service data unavailable"}</p>
+              <p><strong>Vehiculo:</strong> {car ? car.car_model : "Car data unavailable"}</p>
+              <p><strong>Cliente:</strong> {user ? user.name : "Client data unavailable"}</p>
+              <p><strong>Estado:</strong> {appointment.status}</p>
             </div>
           </div>
           <div className="col-12">
-            <p><strong>Comments:</strong></p>
+            <p><strong>Comentarios:</strong></p>
             <ul>
               {comments.length > 0 ? (
                 comments.map((comment, index) => (
@@ -179,7 +180,7 @@ const AppointmentDetails = () => {
                   </li>
                 ))
               ) : (
-                <p>No comments available</p>
+                <p>No hay comentarios disponibles.</p>
               )}
             </ul>
           </div>
@@ -188,7 +189,7 @@ const AppointmentDetails = () => {
       <div className="container my-5">
         <div className="appoinmentAddComments">
           <div className="mb-3">
-            <label className="form-label">Add Comment</label>
+            <label className="form-label">Agregar comentario</label>
             <input
               type="text"
               className="form-control"
@@ -198,7 +199,7 @@ const AppointmentDetails = () => {
             />
             {error && <div className="alert alert-danger mt-2">{error}</div>}
             <button className="btn btn-primary mt-2" onClick={handleAddComment}>
-              Add Comment
+              Enviar
             </button>
           </div>
         </div>

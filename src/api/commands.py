@@ -88,16 +88,39 @@ def setup_commands(app):
 
         # Agregar servicios
         services = [
-            {"name": "Oil Change", "description": "Standard oil change service", "duration": 1, "slots_required": 1},
-            {"name": "Brake Inspection", "description": "Comprehensive brake system inspection", "duration": 1.5, "slots_required": 1},
-            {"name": "Tire Rotation", "description": "Rotation of all four tires", "duration": 1, "slots_required": 1}
+            {"nombre": "Cambio de aceite", "descripcion": "cambio de aceite y filtros", 
+             "duracion": 1, "obrero_requerido": 1},
+            {"nombre": "arreglo de frenos", "descripcion": "reemplazo de pastillas de freno, mantenimiento de discos y liquido",
+              "duracion": 1.5, "obrero_requerido": 1},
+            {"nombre": "alineacion y balanceo", "descripcion": "alineacion y balanceo de las 4 ruedas",
+              "duracion": 1, "obrero_requerido": 1},
+            {"nombre": "Diagnostico electronico", "descripcion": "Escaneo y diagnóstico del sistema electrónico",
+              "duracion": 2, "obrero_requerido": 1},
+            {"nombre": "Burro de arranque", "descripcion": "Reparación o reemplazo del motor de arranque",
+              "duracion": 4, "obrero_requerido": 2},
+            {"nombre": "Alternador", "descripcion": "Revisión y reparación del alternador",
+                "duracion": 4, "obrero_requerido": 2},
+                {"nombre": "Instalacion electrica", "descripcion": "instalacion completa del sistema electrico del vehiculo",
+                "duracion": 2.5, "obrero_requerido": 1},
+                {"nombre": "mantenimiento de luces", "descripcion": "Mantenimiento y reparación del sistema de iluminación",
+                "duracion": 4, "obrero_requerido": 1},
+                {"nombre": "transmision", "descripcion": "Reparación o mantenimiento del sistema de transmisión",
+                "duracion": 5, "obrero_requerido": 2},
+                {"nombre": "revisión pre-VTV", "descripcion": "Inspección completa para asegurar que el vehículo cumple con los requisitos legales",
+                "duracion": 4, "obrero_requerido": 1},
+                {"nombre": "Electro", "descripcion": "Reparación y mantenimiento del sistema eléctrico del vehículo",
+                "duracion": 3, "obrero_requerido": 1},
+                {"nombre": "otro", "descripcion": "Servicios varios no especificados",
+                "duracion": 1, "obrero_requerido": 1},
+
+       
         ]
         for service_data in services:
             service = Service(
-                name=service_data['name'],
-                description=service_data['description'],
-                duration=service_data['duration'],
-                slots_required=service_data['slots_required']
+                name=service_data['nombre'],
+                description=service_data['descripcion'],
+                duration=service_data['duracion'],
+                slots_required=service_data['obrero_requerido']
             )
             db.session.add(service)
 

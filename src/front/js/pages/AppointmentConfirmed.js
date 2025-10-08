@@ -17,16 +17,18 @@ const AppointmentConfirmed = () => {
     <div className="d-flex justify-content-center align-items-center vh-100 appointmentConfirmed-page-background">
       <div className="appointmentConfirmed-card padding text-center">
         <div className="appointmentConfirmed-card-body">
-          <h1 className="appointmentConfirmed-card-header">Appointment Confirmed!</h1>
+          <h1 className="appointmentConfirmed-card-header">Turno confirmado!</h1>
           <p className="appointmentConfirmed-description">
             <br />
-            Thank you for confirming your appointment with us.
+            Gracias por confirmar tu turno con nosotros.
             <br />
             <br />
-            A confirmation email has been sent to your provided email address.
+            Te esperamos en la fecha y hora acordadas.
             <br />
+            Un email de confirmación sera enviado a tu correo.
+
             <br />
-            Please take a moment to rate us on:
+           Si te gusto nuestro servicio, por favor considera dejarnos una reseña en:
           </p>
           <div className="d-flex justify-content-center appointmentConfirmed-mt-4">
             <a
@@ -52,7 +54,7 @@ const AppointmentConfirmed = () => {
           </div>
           <div className="text-center appointmentConfirmed-mt-4">
             <button onClick={userDashboard} className="btn btn-secondary">
-              User Dashboard
+             Panel de usuario
             </button>
             <br />
             <img

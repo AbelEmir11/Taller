@@ -15,20 +15,20 @@ const AccountAndAppointmentCreated = () => {
     <div className="d-flex justify-content-center align-items-center vh-100 page-background">
       <div className="card padding text-center">
         <div className="card-body">
-          <h1 className="card-header">Account and Appointment Created!</h1>
+          <h1 className="card-header">tu cuenta y turno se crearon exitosamente!</h1>
           <br />
           <p className="appointment-description">
-            Thank you for creating an account and scheduling an appointment with us.
+            Gracias por crear una cuenta y programar una cita con nosotros.
             <br />
             <br />
-            A confirmation email has been sent to your provided email address.
+           Un email de confirmación sera enviado a tu correo.
             <br />
             <br />
-            We look forward to seeing you soon!
+            ¡Esperamos verte pronto!
           </p>
           <div className="mt-4">
             <button onClick={userDashboard} className="btn btn-secondary">
-              User Dashboard
+              Panel de usuario
             </button>
             <br />
             <img

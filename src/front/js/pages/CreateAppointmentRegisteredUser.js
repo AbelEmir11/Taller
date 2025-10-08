@@ -434,9 +434,9 @@ const CreateAppointmentRegisteredUser = () => {
       case 1:
         return (
           <div className="card-body">
-            <h3>Please Select or Add a Car</h3>
+            <h3> Seleccioná un vehiculo o agrega uno nuevo   </h3>
             {error && <p className="error-message text-danger">{error}</p>}
-            <label htmlFor="userCars">Select a Car</label>
+            <label htmlFor="userCars">Seleccioná un vehiculo: </label>
             <select
               id="userCars"
               className="form-select"
@@ -448,7 +448,7 @@ const CreateAppointmentRegisteredUser = () => {
                 }
               }}
             >
-              <option value="">Select one of your cars</option>
+              <option value="">Selecciona tu vehiculo</option>
               {userCars.map((car) => (
                 <option key={car.id} value={car.id}>
                   {car.license_plate} - {car.car_model}
@@ -458,24 +458,24 @@ const CreateAppointmentRegisteredUser = () => {
 
             {!carId && (
               <>
-                <p>Or add a new car:</p>
-                <label htmlFor="carLicensePlate">Car License Plate</label>
+                <p>Agrega un nuevo vehiculo:</p>
+                <label htmlFor="carLicensePlate">matricula(solo las letras)</label>
                 <input
                   type="text"
                   id="carLicensePlate"
                   className="form-control"
                   value={carLicensePlate}
                   onChange={requireLicensePlate}
-                  placeholder="Enter car license plate"
+                  placeholder="ABC"
                 />
-                <label htmlFor="carModel">Car Make & Model</label>
+                <label htmlFor="carModel">Marca y modelo del vehiculo</label>
                 <input
                   type="text"
                   id="carModel"
                   className="form-control"
                   value={carModel}
                   onChange={(e) => setCarModel(e.target.value)}
-                  placeholder="Enter car make & model"
+                  placeholder="Toyota Corolla"
                 />
               </>
             )}
@@ -485,16 +485,17 @@ const CreateAppointmentRegisteredUser = () => {
       case 2:
         return (
           <div className="card-body">
-            <h3>Please Select a Service</h3>
+            <h3>Seleccioná el servicio requerido:</h3>
             {error && <p className="error-message text-danger">{error}</p>}
-            <label htmlFor="service">Service</label>
+            <label htmlFor="service">Servicio</label>
             <select
               id="service"
               className="form-select"
               value={serviceChosen}
               onChange={handleServiceChange}
             >
-              <option value="">Select a service</option>
+              <option value=""> Ej: Cambio de aceite               
+              </option>
               {services.map((service) => (
                 <option key={service.id} value={service.id}>
                   {service.name}
@@ -507,9 +508,11 @@ const CreateAppointmentRegisteredUser = () => {
       case 3:
         return (
           <div className="card-body datetimepicker-component">
-            <h3>Please Select Appointment Date, Time, and Add a Comment</h3>
+            <h3>
+              Seleccioná la fecha, hora y agrega un comentario (opcional pero importante):
+            </h3>
             {error && <p className="error-message text-danger">{error}</p>}
-            <label htmlFor="date">Appointment Date</label>
+            <label htmlFor="date">Fecha del turno</label>
             <DatePicker
               ref={datePickerRef}
               format="DD/MM/YYYY HH:mm"
@@ -524,13 +527,14 @@ const CreateAppointmentRegisteredUser = () => {
               disabledTime={disabledTime}
             />
 
-            <label htmlFor="comment">Comments</label>
+            <label htmlFor="comment">Comentarios</label>
             <textarea
               id="comment"
               className="form-control"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder="Add a comment"
+              placeholder="Escribe cualquier comentario relevante sobre el servicio o tu vehiculo, 
+              ejemplo: 'El coche hace un ruido extraño al frenar' o 'no carga la bateria'."
             />
           </div>
         );
@@ -550,24 +554,24 @@ const CreateAppointmentRegisteredUser = () => {
         return (
           <div className="appointment-summary-container mx-3">
             <div className="card-body">
-              <h3>Appointment Summary</h3>
+              <h3>Resumen del turno</h3>
               <p>
-                <strong>Car:</strong> {displayedCarLicensePlate} -{" "}
+                <strong>CVehiculo:</strong> {displayedCarLicensePlate} -{" "}
                 {displayedCarModel}
               </p>
               <p>
-                <strong>Service:</strong> {serviceName}
+                <strong>Servicio:</strong> {serviceName}
               </p>
               <p>
-                <strong>Date:</strong>{" "}
+                <strong>Fecha:</strong>{" "}
                 {appointmentDate ? appointmentDate.format("DD/MM/YYYY") : ""}
               </p>
               <p>
-                <strong>Time:</strong>{" "}
+                <strong>Hora:</strong>{" "}
                 {appointmentDate ? appointmentDate.format("hh:mm A") : ""}
               </p>
               <p>
-                <strong>Comment:</strong> {comment}
+                <strong>Comentarios:</strong> {comment}
               </p>
             </div>
           </div>
