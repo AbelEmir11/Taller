@@ -4,7 +4,7 @@ import { Context } from "../store/appContext";
 import "../../styles/home.css";
 import { useNavigate } from "react-router-dom";
 import heroImg from "../../img/hero-img.png";
-import worldDottedMap from "../../img/world-dotted-map.png";
+import fondo from "../../img/fondo.jpg";
 
 export const Home = () => {
   const { store, actions } = useContext(Context);
@@ -18,7 +18,7 @@ export const Home = () => {
     <>
       <section id="hero" className="hero section dark-background snipcss-OOBoC">
         <img
-          src={worldDottedMap}
+          src={fondo}
           alt=""
           className="hero-bg aos-init aos-animate"
           data-aos="fade-in"
