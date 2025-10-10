@@ -75,7 +75,7 @@ const Error404 = () => {
       </svg>
       <div className="error404-message">Page not found</div>
       <button onClick={() => navigate("/")} className="error404-btn mb-5">
-        Return Home
+       
       </button>
     </div>
   );

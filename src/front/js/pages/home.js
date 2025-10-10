@@ -4,7 +4,7 @@ import { Context } from "../store/appContext";
 import "../../styles/home.css";
 import { useNavigate } from "react-router-dom";
 import heroImg from "../../img/hero-img.png";
-import fondo from "../../img/fondo.jpg";
+import fondo3 from "../../img/fondo3.jpg";
 
 export const Home = () => {
   const { store, actions } = useContext(Context);
@@ -18,7 +18,7 @@ export const Home = () => {
     <>
       <section id="hero" className="hero section dark-background snipcss-OOBoC">
         <img
-          src={fondo}
+          src={fondo3}
           alt=""
           className="hero-bg aos-init aos-animate"
           data-aos="fade-in"
@@ -27,7 +27,7 @@ export const Home = () => {
           <div className="row gy-4 d-flex justify-content-between">
             <div className="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
               <h2 data-aos="fade-up" className="aos-init aos-animate">
-                Tu taller de confianza para el mantenimiento y reparación de vehículos
+                Tu taller de confianza para el mantenimiento y reparación de tu vehículo
               </h2>
               <p
                 data-aos="fade-up"

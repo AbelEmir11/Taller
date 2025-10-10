@@ -6,21 +6,21 @@ export const Footer = () => (
       <p className="mb-0">
         Hecho por:  <i className="fa fa-heart text-danger"></i> by{" "}
         <a
-          href="https://github.com/AbelEmir11"
+          href="https://portfolio-abel-tau.vercel.app/"
           target="_blank"
           className="text-decoration-none text-white fw-bold"
         >
           Abel Alvarado | &nbsp;
         </a>
         <a
-          href="https://github.com/StevenSanz"
+          href="https://www.instagram.com/melialvarado13/"
           target="_blank"
           className="text-decoration-none text-white fw-bold"
         >
           Melanie Alvarado | &nbsp;
         </a>
         <a
-          href="https://github.com/nunezweb"
+          href="https://www.instagram.com/mayravillegass/"
           target="_blank"
           className="text-decoration-none text-white fw-bold"
         >
