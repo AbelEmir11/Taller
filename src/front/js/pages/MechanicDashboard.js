@@ -3,7 +3,8 @@ import MechanicAppointmentList from '../component/MechanicAppointmentList';
 import UserProfileModal from '../component/UserProfileModal';
 import '../../styles/mechanicdashboard.css';
 import { Context } from '../store/appContext';
-
+import heroImg from "../../img/hero-img.png";
+import fondo3 from "../../img/fondo3.jpg";
 const MechanicDashboard = () => {
   const { store, actions } = useContext(Context);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
@@ -90,14 +91,20 @@ const MechanicDashboard = () => {
   };
 
   return (
+    
+     
+            
+       
     <div className="container py-5">
-      <h1 className="text-center">Mechanic Dashboard</h1>
+      <h1 className="text-center">Panel mecanico</h1>
       {!hasAccess ? (
         <div className="card p-5">
           <div className="card-body mx-auto">
-            <h2 className="card-title">You do not have access to this section</h2>
+            <h2 className="card-title">
+              Acceso denegado
+            </h2>
             <p className="card-text mt-3">
-              You must log in as a registered mechanic to view the content of this page.
+             Debe iniciar sesión como mecánico registrado para ver el contenido de esta página.
             </p>
           </div>
         </div>
@@ -108,7 +115,7 @@ const MechanicDashboard = () => {
               className="btn btn-secondary mb-3"
               onClick={handleProfileModalOpen}
             >
-              Edit Profile
+              Editar perfil
             </button>
           </div>
           <MechanicAppointmentList />

@@ -4,7 +4,7 @@ export const Footer = () => (
   <footer className="footer mt-auto py-3 text-center bg-dark text-white">
     <div className="container">
       <p className="mb-0">
-        Hecho por:  <i className="fa fa-heart text-danger"></i> by{" "}
+        Hecho por:  
         <a
           href="https://portfolio-abel-tau.vercel.app/"
           target="_blank"
