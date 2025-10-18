@@ -9,9 +9,11 @@ import iconFavorites from "../../img/icons/icon-favorites.png";
 import iconBriefcase from "../../img/icons/icon-briefcase.png";
 import "../../styles/admindashboard.css";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
   const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [maxAppointmentsPerHour, setMaxAppointmentsPerHour] = useState(null);
@@ -226,6 +228,17 @@ const AdminDashboard = () => {
                   onClick={handleProfileModalOpen}
                 >
                   Editar
+                </button>
+              </div>
+              <div className="stat6 col mx-2">
+                <img src={iconBriefcase} alt="Economic" />
+                <h3>Gestión Económica</h3>
+                <p>Ingresos, egresos y metas</p>
+                <button
+                  className="btn btn-primary btnSetting"
+                  onClick={() => navigate('/economic-dashboard')}
+                >
+                  Acceder
                 </button>
               </div>
             </div>

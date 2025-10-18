@@ -59,6 +59,15 @@
   padding-top: 20px;
   text-align: center;
 }
+.stat6 {
+  background-color: #F0F8FF;
+  border: 2px solid #007bff;
+  border-radius: 5%;
+  margin-top: 15px;
+  padding: 10px;
+  padding-top: 20px;
+  text-align: center;
+}
 
 /* User List Styles */
 .user-list {

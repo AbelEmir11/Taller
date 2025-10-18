@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, Blueprint
-from api.models import db, User, Role, Car, Appointment, Service, Comment, Setting, TokenBlockList
+from api.models import db, User, Role, Car, Appointment, Service, Comment, Setting, TokenBlockList, Income, Expense, FinancialGoal
 from api.utils import generate_sitemap, APIException
 from flask import Flask
 from flask_cors import CORS
@@ -673,4 +673,342 @@ def update_profile():
 
     db.session.commit()
     return jsonify({"msg": "Profile updated successfully", "email": user.email}), 200
+
+# ================================ RUTAS ECONÓMICAS ================================
+
+# ///////////////////////////////////////////////////////////////////////////////////////////// POST /incomes
+@api.route('/incomes', methods=['POST'])
+@jwt_required()
+def create_income():
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+    
+    amount = data.get('amount')
+    description = data.get('description')
+    client_name = data.get('client_name')
+    car_license_plate = data.get('car_license_plate')
+    appointment_id = data.get('appointment_id')
+    date = data.get('date')
+    
+    if not amount or not description:
+        return jsonify({"error": "Amount and description are required"}), 400
+    
+    user_id = get_jwt_identity()
+    
+    # Si se proporciona una fecha específica, usarla; sino usar la fecha actual
+    if date:
+        try:
+            income_date = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+        except ValueError:
+            return jsonify({"error": "Invalid date format. Use YYYY-MM-DD HH:MM:SS"}), 400
+    else:
+        income_date = datetime.utcnow()
+    
+    new_income = Income(
+        amount=amount,
+        description=description,
+        client_name=client_name,
+        car_license_plate=car_license_plate,
+        appointment_id=appointment_id,
+        date=income_date,
+        created_by=user_id
+    )
+    
+    db.session.add(new_income)
+    db.session.commit()
+    
+    return jsonify(new_income.serialize()), 201
+
+# ///////////////////////////////////////////////////////////////////////////////////////////// GET /incomes
+@api.route('/incomes', methods=['GET'])
+@jwt_required()
+def get_incomes():
+    # Verificar que sea admin
+    payload = get_jwt()
+    if payload.get("role_id") != 1:
+        return jsonify({"error": "Access denied. Admin role required"}), 403
+    
+    # Filtros opcionales
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    
+    query = Income.query
+    
+    if start_date:
+        try:
+            start_dt = datetime.strptime(start_date, '%Y-%m-%d')
+            query = query.filter(Income.date >= start_dt)
+        except ValueError:
+            return jsonify({"error": "Invalid start_date format. Use YYYY-MM-DD"}), 400
+    
+    if end_date:
+        try:
+            end_dt = datetime.strptime(end_date, '%Y-%m-%d')
+            query = query.filter(Income.date <= end_dt)
+        except ValueError:
+            return jsonify({"error": "Invalid end_date format. Use YYYY-MM-DD"}), 400
+    
+    incomes = query.order_by(Income.date.desc()).all()
+    return jsonify([income.serialize() for income in incomes]), 200
+
+# ///////////////////////////////////////////////////////////////////////////////////////////// POST /expenses
+@api.route('/expenses', methods=['POST'])
+@jwt_required()
+def create_expense():
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+    
+    amount = data.get('amount')
+    description = data.get('description')
+    category = data.get('category')
+    date = data.get('date')
+    
+    if not amount or not description or not category:
+        return jsonify({"error": "Amount, description and category are required"}), 400
+    
+    user_id = get_jwt_identity()
+    
+    # Si se proporciona una fecha específica, usarla; sino usar la fecha actual
+    if date:
+        try:
+            expense_date = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+        except ValueError:
+            return jsonify({"error": "Invalid date format. Use YYYY-MM-DD HH:MM:SS"}), 400
+    else:
+        expense_date = datetime.utcnow()
+    
+    new_expense = Expense(
+        amount=amount,
+        description=description,
+        category=category,
+        date=expense_date,
+        created_by=user_id
+    )
+    
+    db.session.add(new_expense)
+    db.session.commit()
+    
+    return jsonify(new_expense.serialize()), 201
+
+# ///////////////////////////////////////////////////////////////////////////////////////////// GET /expenses
+@api.route('/expenses', methods=['GET'])
+@jwt_required()
+def get_expenses():
+    # Verificar que sea admin
+    payload = get_jwt()
+    if payload.get("role_id") != 1:
+        return jsonify({"error": "Access denied. Admin role required"}), 403
+    
+    # Filtros opcionales
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    category = request.args.get('category')
+    
+    query = Expense.query
+    
+    if start_date:
+        try:
+            start_dt = datetime.strptime(start_date, '%Y-%m-%d')
+            query = query.filter(Expense.date >= start_dt)
+        except ValueError:
+            return jsonify({"error": "Invalid start_date format. Use YYYY-MM-DD"}), 400
+    
+    if end_date:
+        try:
+            end_dt = datetime.strptime(end_date, '%Y-%m-%d')
+            query = query.filter(Expense.date <= end_dt)
+        except ValueError:
+            return jsonify({"error": "Invalid end_date format. Use YYYY-MM-DD"}), 400
+    
+    if category:
+        query = query.filter(Expense.category == category)
+    
+    expenses = query.order_by(Expense.date.desc()).all()
+    return jsonify([expense.serialize() for expense in expenses]), 200
+
+# ///////////////////////////////////////////////////////////////////////////////////////////// GET /financial-balance
+@api.route('/financial-balance', methods=['GET'])
+@jwt_required()
+def get_financial_balance():
+    # Verificar que sea admin
+    payload = get_jwt()
+    if payload.get("role_id") != 1:
+        return jsonify({"error": "Access denied. Admin role required"}), 403
+    
+    # Filtros de fecha
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    
+    # Calcular ingresos
+    income_query = Income.query
+    if start_date:
+        start_dt = datetime.strptime(start_date, '%Y-%m-%d')
+        income_query = income_query.filter(Income.date >= start_dt)
+    if end_date:
+        end_dt = datetime.strptime(end_date, '%Y-%m-%d')
+        income_query = income_query.filter(Income.date <= end_dt)
+    
+    total_income = db.session.query(db.func.sum(Income.amount)).filter(
+        Income.id.in_([i.id for i in income_query.all()])
+    ).scalar() or 0
+    
+    # Calcular egresos
+    expense_query = Expense.query
+    if start_date:
+        start_dt = datetime.strptime(start_date, '%Y-%m-%d')
+        expense_query = expense_query.filter(Expense.date >= start_dt)
+    if end_date:
+        end_dt = datetime.strptime(end_date, '%Y-%m-%d')
+        expense_query = expense_query.filter(Expense.date <= end_dt)
+    
+    total_expense = db.session.query(db.func.sum(Expense.amount)).filter(
+        Expense.id.in_([e.id for e in expense_query.all()])
+    ).scalar() or 0
+    
+    balance = total_income - total_expense
+    
+    return jsonify({
+        'total_income': total_income,
+        'total_expense': total_expense,
+        'balance': balance,
+        'period': {
+            'start_date': start_date,
+            'end_date': end_date
+        }
+    }), 200
+
+# ///////////////////////////////////////////////////////////////////////////////////////////// POST /financial-goals
+@api.route('/financial-goals', methods=['POST'])
+@jwt_required()
+def create_financial_goal():
+    # Verificar que sea admin
+    payload = get_jwt()
+    if payload.get("role_id") != 1:
+        return jsonify({"error": "Access denied. Admin role required"}), 403
+    
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+    
+    title = data.get('title')
+    description = data.get('description')
+    target_amount = data.get('target_amount')
+    target_date = data.get('target_date')
+    
+    if not title or not target_amount:
+        return jsonify({"error": "Title and target amount are required"}), 400
+    
+    user_id = get_jwt_identity()
+    
+    # Procesar fecha objetivo si se proporciona
+    goal_target_date = None
+    if target_date:
+        try:
+            goal_target_date = datetime.strptime(target_date, '%Y-%m-%d')
+        except ValueError:
+            return jsonify({"error": "Invalid target_date format. Use YYYY-MM-DD"}), 400
+    
+    new_goal = FinancialGoal(
+        title=title,
+        description=description,
+        target_amount=target_amount,
+        target_date=goal_target_date,
+        created_by=user_id
+    )
+    
+    db.session.add(new_goal)
+    db.session.commit()
+    
+    return jsonify(new_goal.serialize()), 201
+
+# ///////////////////////////////////////////////////////////////////////////////////////////// GET /financial-goals
+@api.route('/financial-goals', methods=['GET'])
+@jwt_required()
+def get_financial_goals():
+    # Verificar que sea admin
+    payload = get_jwt()
+    if payload.get("role_id") != 1:
+        return jsonify({"error": "Access denied. Admin role required"}), 403
+    
+    goals = FinancialGoal.query.filter_by(is_active=True).order_by(FinancialGoal.created_at.desc()).all()
+    return jsonify([goal.serialize() for goal in goals]), 200
+
+# ///////////////////////////////////////////////////////////////////////////////////////////// PATCH /financial-goals/<id>
+@api.route('/financial-goals/<int:goal_id>', methods=['PATCH'])
+@jwt_required()
+def update_financial_goal(goal_id):
+    # Verificar que sea admin
+    payload = get_jwt()
+    if payload.get("role_id") != 1:
+        return jsonify({"error": "Access denied. Admin role required"}), 403
+    
+    goal = FinancialGoal.query.get(goal_id)
+    if not goal:
+        return jsonify({"error": "Goal not found"}), 404
+    
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+    
+    # Actualizar campos si se proporcionan
+    if 'title' in data:
+        goal.title = data['title']
+    if 'description' in data:
+        goal.description = data['description']
+    if 'target_amount' in data:
+        goal.target_amount = data['target_amount']
+    if 'current_amount' in data:
+        goal.current_amount = data['current_amount']
+    if 'target_date' in data:
+        if data['target_date']:
+            try:
+                goal.target_date = datetime.strptime(data['target_date'], '%Y-%m-%d')
+            except ValueError:
+                return jsonify({"error": "Invalid target_date format. Use YYYY-MM-DD"}), 400
+        else:
+            goal.target_date = None
+    if 'is_active' in data:
+        goal.is_active = data['is_active']
+    
+    db.session.commit()
+    return jsonify(goal.serialize()), 200
+
+# ///////////////////////////////////////////////////////////////////////////////////////////// GET /financial-summary
+@api.route('/financial-summary', methods=['GET'])
+@jwt_required()
+def get_financial_summary():
+    # Verificar que sea admin
+    payload = get_jwt()
+    if payload.get("role_id") != 1:
+        return jsonify({"error": "Access denied. Admin role required"}), 403
+    
+    # Resumen del mes actual
+    now = datetime.utcnow()
+    start_of_month = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    
+    # Ingresos del mes
+    monthly_income = db.session.query(db.func.sum(Income.amount)).filter(
+        Income.date >= start_of_month
+    ).scalar() or 0
+    
+    # Egresos del mes
+    monthly_expense = db.session.query(db.func.sum(Expense.amount)).filter(
+        Expense.date >= start_of_month
+    ).scalar() or 0
+    
+    # Balance del mes
+    monthly_balance = monthly_income - monthly_expense
+    
+    # Metas activas
+    active_goals = FinancialGoal.query.filter_by(is_active=True).all()
+    
+    return jsonify({
+        'monthly_income': monthly_income,
+        'monthly_expense': monthly_expense,
+        'monthly_balance': monthly_balance,
+        'active_goals': [goal.serialize() for goal in active_goals],
+        'current_month': now.strftime('%Y-%m')
+    }), 200
 

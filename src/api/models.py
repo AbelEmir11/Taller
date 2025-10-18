@@ -131,3 +131,83 @@ class Setting(db.Model):
 class TokenBlockList(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     jti = db.Column(db.String(100), nullable=False, unique=True)
+
+# Modelos para gestión económica
+class Income(db.Model):
+    __tablename__ = 'incomes'
+    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    amount = db.Column(db.Float, nullable=False)
+    description = db.Column(db.String(255), nullable=False)
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    client_name = db.Column(db.String(100), nullable=True)
+    car_license_plate = db.Column(db.String(20), nullable=True)
+    appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=True)
+    created_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    
+    appointment = db.relationship('Appointment', backref='income')
+    creator = db.relationship('User', backref='created_incomes')
+    
+    def serialize(self):
+        return {
+            'id': self.id,
+            'amount': self.amount,
+            'description': self.description,
+            'date': self.date,
+            'client_name': self.client_name,
+            'car_license_plate': self.car_license_plate,
+            'appointment_id': self.appointment_id,
+            'created_by': self.created_by
+        }
+
+class Expense(db.Model):
+    __tablename__ = 'expenses'
+    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    amount = db.Column(db.Float, nullable=False)
+    description = db.Column(db.String(255), nullable=False)
+    category = db.Column(db.String(100), nullable=False)  # impuestos, alquiler, luz, gas, sueldo, etc.
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    created_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    
+    creator = db.relationship('User', backref='created_expenses')
+    
+    def serialize(self):
+        return {
+            'id': self.id,
+            'amount': self.amount,
+            'description': self.description,
+            'category': self.category,
+            'date': self.date,
+            'created_by': self.created_by
+        }
+
+class FinancialGoal(db.Model):
+    __tablename__ = 'financial_goals'
+    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    target_amount = db.Column(db.Float, nullable=False)
+    current_amount = db.Column(db.Float, default=0.0)
+    start_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    target_date = db.Column(db.DateTime, nullable=True)
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    created_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    
+    creator = db.relationship('User', backref='created_goals')
+    
+    def serialize(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'target_amount': self.target_amount,
+            'current_amount': self.current_amount,
+            'start_date': self.start_date,
+            'target_date': self.target_date,
+            'is_active': self.is_active,
+            'created_by': self.created_by,
+            'progress_percentage': (self.current_amount / self.target_amount * 100) if self.target_amount > 0 else 0
+        }

@@ -23,6 +23,7 @@ import AppointmentDetails from "./pages/AppointmentDetails";
 import CreateAppointmentRegisteredUser from "./pages/CreateAppointmentRegisteredUser";
 import AppointmentConfirmed from "./pages/AppointmentConfirmed";
 import AccountAndAppointmentCreated from "./pages/AccountAndAppointmentCreated";
+import EconomicDashboard from "./pages/EconomicDashboard";
 
 
 const Layout = () => {
@@ -48,6 +49,7 @@ const Layout = () => {
                         <Route element={<UserAppointments />} path="/userappointments" />
                         <Route element={<AdminDashboard />} path="/admindashboard" />
                         <Route element={<MechanicDashboard />} path="/mechanicdashboard" />
+                        <Route element={<EconomicDashboard />} path="/economic-dashboard" />
                         <Route element={<AppointmentDetails />} path="/appointmentdetails/:appointmentId" />
                         <Route path="*" element={<Error404 />} />
                     </Routes>
