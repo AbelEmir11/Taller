@@ -80,7 +80,7 @@ database.database
 database.db
 diagram.png
 __pycache__/
-migrations/
+# migrations/ - Comentado para permitir migraciones en producción
 
 # Ignore environment variables file
 .env
