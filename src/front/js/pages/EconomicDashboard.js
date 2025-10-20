@@ -411,7 +411,7 @@ const AddIncomeModal = ({ onClose, onSave }) => {
     description: '',
     client_name: '',
     car_license_plate: '',
-    date: new Date().toISOString().slice(0, 16)
+    date: new Date().toISOString().split('T')[0] // Cambiado a solo fecha
   });
 
   const handleSubmit = (e) => {
@@ -472,7 +472,7 @@ const AddIncomeModal = ({ onClose, onSave }) => {
               <div className="mb-3">
                 <label className="form-label">Fecha</label>
                 <input 
-                  type="datetime-local" 
+                  type="date" 
                   className="form-control" 
                   value={formData.date}
                   onChange={(e) => setFormData({...formData, date: e.target.value})}
@@ -496,7 +496,7 @@ const AddExpenseModal = ({ onClose, onSave }) => {
     amount: '',
     description: '',
     category: '',
-    date: new Date().toISOString().slice(0, 16)
+    date: new Date().toISOString().split('T')[0] // Cambiado a solo fecha
   });
 
   const categories = [
@@ -558,7 +558,7 @@ const AddExpenseModal = ({ onClose, onSave }) => {
               <div className="mb-3">
                 <label className="form-label">Fecha</label>
                 <input 
-                  type="datetime-local" 
+                  type="date" 
                   className="form-control" 
                   value={formData.date}
                   onChange={(e) => setFormData({...formData, date: e.target.value})}

@@ -1,10 +1,14 @@
 FROM node:20.0.0
 
 RUN apt update \
-    && apt install software-properties-common \
+    && apt install -y software-properties-common tzdata \
     && add-apt-repository ppa:deadsnakes/ppa \
     && apt update \
-    && apt install python3.10
+    && apt install -y python3.10
+
+# Configurar zona horaria
+ENV TZ=America/Santiago
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 WORKDIR /opt/app
 COPY --from=build /opt/app/venv /venv
