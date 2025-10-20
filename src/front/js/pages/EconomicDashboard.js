@@ -101,6 +101,13 @@ const EconomicDashboard = () => {
   const handleAddIncome = async (incomeData) => {
     try {
       const token = localStorage.getItem("token");
+      // Formatear los datos antes de enviar
+      const formattedData = {
+        ...incomeData,
+        amount: Number(incomeData.amount),
+        date: `${incomeData.date} 00:00:00`, // Agregar la hora en formato específico
+      };
+
       const response = await fetch(`${apiUrl}/incomes`, {
         method: 'POST',
         headers: {
@@ -108,7 +115,7 @@ const EconomicDashboard = () => {
           Authorization: `Bearer ${token}`,
           ...store.corsEnabled
         },
-        body: JSON.stringify(incomeData),
+        body: JSON.stringify(formattedData),
       });
 
       if (response.ok) {
@@ -127,6 +134,13 @@ const EconomicDashboard = () => {
   const handleAddExpense = async (expenseData) => {
     try {
       const token = localStorage.getItem("token");
+      // Formatear los datos antes de enviar
+      const formattedData = {
+        ...expenseData,
+        amount: Number(expenseData.amount),
+        date: `${expenseData.date} 00:00:00`, // Agregar la hora en formato específico
+      };
+
       const response = await fetch(`${apiUrl}/expenses`, {
         method: 'POST',
         headers: {
@@ -134,7 +148,7 @@ const EconomicDashboard = () => {
           Authorization: `Bearer ${token}`,
           ...store.corsEnabled
         },
-        body: JSON.stringify(expenseData),
+        body: JSON.stringify(formattedData),
       });
 
       if (response.ok) {
