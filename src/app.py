@@ -6,7 +6,6 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_jwt_extended import JWTManager
-from api.mercadopago_routes import mp_bp
 from api.utils import APIException, generate_sitemap
 from api.models import db, TokenBlockList
 from api.routes import api
@@ -94,7 +93,3 @@ if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=PORT, debug=True)
     
-app.register_blueprint(mp_bp, url_prefix="/api/mercadopago")
-
-if __name__ == "__main__":
-    app.run(debug=True)
