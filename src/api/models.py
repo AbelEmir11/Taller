@@ -211,3 +211,47 @@ class FinancialGoal(db.Model):
             'created_by': self.created_by,
             'progress_percentage': (self.current_amount / self.target_amount * 100) if self.target_amount > 0 else 0
         }
+
+class Notification(db.Model):
+    __tablename__ = 'notifications'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    read = db.Column(db.Boolean, default=False)
+    
+    def serialize(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'message': self.message,
+            'user_id': self.user_id,
+            'appointment_id': self.appointment_id,
+            'created_at': self.created_at,
+            'read': self.read
+        }
+
+class EmailNotification(db.Model):
+    __tablename__ = 'email_notifications'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    to_email = db.Column(db.String(100), nullable=False)
+    subject = db.Column(db.String(200), nullable=False)
+    body = db.Column(db.Text, nullable=False)
+    status = db.Column(db.String(20), default='pending')  # pending, sent, failed
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    sent_at = db.Column(db.DateTime, nullable=True)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'to_email': self.to_email,
+            'subject': self.subject,
+            'body': self.body,
+            'status': self.status,
+            'created_at': self.created_at,
+            'sent_at': self.sent_at
+        }

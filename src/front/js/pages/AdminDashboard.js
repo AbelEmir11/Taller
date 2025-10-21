@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import UserList from "../component/UserList";
 import UserProfileModal from "../component/UserProfileModal";
 import SettingModal from "../component/SettingModal";
+import NotificationList from "../component/NotificationList";
 import iconUser from "../../img/icons/icon-user.png";
 import iconComments from "../../img/icons/icon-comments.png";
 import iconConnect from "../../img/icons/icon-connect.png";
@@ -28,6 +29,7 @@ const AdminDashboard = () => {
     email: "",
     password: "********",
   });
+  const [notifications, setNotifications] = useState([]);
 
   const handleSettingModalOpen = () => {
     setIsSettingModalOpen(true);
@@ -130,6 +132,28 @@ const AdminDashboard = () => {
         }
       };
       loadSetting();
+
+      const loadNotifications = async () => {
+        try {
+          const response = await fetch(`${apiUrl}/notifications`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              ...store.corsEnabled
+            }
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            setNotifications(data);
+          }
+        } catch (error) {
+          console.error("Error loading notifications:", error);
+        }
+      };
+
+      if (hasAccess) {
+        loadNotifications();
+      }
     }
   }, [store.token, store.setting]);
 
@@ -266,6 +290,9 @@ const AdminDashboard = () => {
         )}
         {statusMessage && (
           <div className="alert alert-success mt-3">{statusMessage}</div>
+        )}
+        {hasAccess && (
+          <NotificationList notifications={notifications} />
         )}
       </div>
     </div>

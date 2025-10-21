@@ -1,4 +1,8 @@
-from flask import jsonify, url_for
+from flask import jsonify, url_for, current_app
+import os
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 class APIException(Exception):
     status_code = 400
@@ -39,3 +43,29 @@ def generate_sitemap(app):
         <p>Start working on your project by following the <a href="https://start.4geeksacademy.com/starters/full-stack" target="_blank">Quick Start</a></p>
         <p>Remember to specify a real endpoint path like: </p>
         <ul style="text-align: left;">"""+links_html+"</ul></div>"
+
+def send_email(to_email, subject, body):
+    try:
+        # Usar la configuración de la aplicación
+        from flask import current_app
+        
+        msg = MIMEMultipart()
+        msg['From'] = current_app.config['MAIL_DEFAULT_SENDER']
+        msg['To'] = to_email
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body, 'plain'))
+
+        # Guardar el correo en la base de datos para envío posterior
+        notification = EmailNotification(
+            to_email=to_email,
+            subject=subject,
+            body=body,
+            status='pending'
+        )
+        db.session.add(notification)
+        db.session.commit()
+        
+        return True
+    except Exception as e:
+        print(f"Error queueing email: {str(e)}")
+        return False

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../store/appContext';
 
-function MechanicAppointmentList() {
+const MechanicAppointmentList = () => {
   const [appointments, setAppointments] = useState([]);
   const navigate = useNavigate();
   const { store } = useContext(Context);

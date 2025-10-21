@@ -6,6 +6,7 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_jwt_extended import JWTManager
+from api.mercadopago_routes import mp_bp
 from api.utils import APIException, generate_sitemap
 from api.models import db, TokenBlockList
 from api.routes import api
@@ -23,6 +24,11 @@ app.url_map.strict_slashes = False
 
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET")
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=3)
+# Agregar configuración de correo
+app.config['MAIL_USERNAME'] = 'autoagendanotificaciones@example.com'
+app.config['MAIL_PASSWORD'] = '123456'
+app.config['MAIL_DEFAULT_SENDER'] = 'AutoAgenda <autoagendanotificaciones@example.com>'
+
 jwt = JWTManager(app)
 
 @jwt.token_in_blocklist_loader
@@ -56,6 +62,8 @@ app.register_blueprint(api, url_prefix='/api')
 # Handle/serialize errors like a JSON object
 
 
+
+
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
@@ -85,3 +93,8 @@ def serve_any_other_file(path):
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=PORT, debug=True)
+    
+app.register_blueprint(mp_bp, url_prefix="/api/mercadopago")
+
+if __name__ == "__main__":
+    app.run(debug=True)

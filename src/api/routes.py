@@ -2,8 +2,8 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, Blueprint
-from api.models import db, User, Role, Car, Appointment, Service, Comment, Setting, TokenBlockList, Income, Expense, FinancialGoal
-from api.utils import generate_sitemap, APIException
+from api.models import db, User, Role, Car, Appointment, Service, Comment, Setting, TokenBlockList, Income, Expense, FinancialGoal, Notification
+from api.utils import generate_sitemap, APIException, send_email
 from flask import Flask
 from flask_cors import CORS
 from datetime import datetime, timedelta, timezone
@@ -1011,4 +1011,61 @@ def get_financial_summary():
         'active_goals': [goal.serialize() for goal in active_goals],
         'current_month': now.strftime('%Y-%m')
     }), 200
+
+# ///////////////////////////////////////////////////////////////////////////////////////////// post en /appointments/<id>/complete
+@api.route('/appointments/<int:appointment_id>/complete', methods=['PUT'])
+@jwt_required()
+def complete_appointment(appointment_id):
+    try:
+        appointment = Appointment.query.get(appointment_id)
+        if not appointment:
+            return jsonify({"error": "Appointment not found"}), 404
+
+        appointment.status = "completed"
+        
+        # Crear notificación para el admin
+        admin_notification = Notification(
+            title="Trabajo Completado",
+            message=f"El trabajo del vehículo {appointment.car.license_plate} ha sido completado",
+            user_id=1,  # ID del admin
+            appointment_id=appointment_id
+        )
+        db.session.add(admin_notification)
+
+        # Obtener información del cliente
+        client = User.query.get(appointment.user_id)
+        if client and client.email:
+            # Enviar correo al cliente
+            email_subject = "Su vehículo está listo"
+            email_body = f"""
+            Estimado/a {client.name},
+
+            Le informamos que su vehículo {appointment.car.license_plate} está listo para ser retirado.
+            
+            Servicio realizado: {appointment.service.name}
+            Fecha de finalización: {datetime.now().strftime('%Y-%m-%d %H:%M')}
+
+            Por favor, acérquese al taller en nuestro horario de atención.
+
+            Saludos cordiales,
+            El equipo del taller
+            """
+            send_email(client.email, email_subject, email_body)
+
+        db.session.commit()
+        return jsonify({"message": "Appointment completed and notification sent"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+# ///////////////////////////////////////////////////////////////////////////////////////////// get a /notifications
+@api.route('/notifications', methods=['GET'])
+@jwt_required()
+def get_notifications():
+    payload = get_jwt()
+    if payload.get("role_id") != 1:
+        return jsonify({"error": "Access denied"}), 403
+
+    notifications = Notification.query.order_by(Notification.created_at.desc()).all()
+    return jsonify([notif.serialize() for notif in notifications]), 200
 

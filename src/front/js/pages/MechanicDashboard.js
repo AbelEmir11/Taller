@@ -90,6 +90,31 @@ const MechanicDashboard = () => {
     }
   };
 
+  const handleJobComplete = async (appointmentId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${apiUrl}/appointments/${appointmentId}/complete`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+          ...store.corsEnabled
+        }
+      });
+
+      if (response.ok) {
+        setStatusMessage("Trabajo marcado como completado y notificación enviada");
+        // Recargar la lista de citas
+        actions.loadAppointments();
+      } else {
+        const error = await response.json();
+        setStatusMessage("Error: " + error.error);
+      }
+    } catch (error) {
+      setStatusMessage("Error al marcar el trabajo como completado");
+    }
+  };
+
   return (
     
      
@@ -118,7 +143,7 @@ const MechanicDashboard = () => {
               Editar perfil
             </button>
           </div>
-          <MechanicAppointmentList />
+          <MechanicAppointmentList onJobComplete={handleJobComplete} />
           {isProfileModalOpen && (
             <UserProfileModal
               user={profile}
