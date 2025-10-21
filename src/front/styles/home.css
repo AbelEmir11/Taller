@@ -2,7 +2,7 @@ body {
   --background-color:  #003366;  
   --default-color:  #ffffff;  
   --heading-color:  #ffffff;  
-  --contrast-color:  #ffffff; 
+  --contrast-color:  #d81010; 
 
   --bs-btn-padding-x:  0.75rem;  
   --bs-btn-padding-y:  0.375rem;  
@@ -460,10 +460,10 @@ button {
 } 
 
 .btn-primary { 
-  --bs-btn-color: #40a7fc; 
+  --bs-btn-color: #001d2b; 
   --bs-btn-bg: #0d6efd; 
   --bs-btn-border-color: #0d6efd; 
-  --bs-btn-hover-color: #8ee5ff; 
+  --bs-btn-hover-color: #001d2b; 
   --bs-btn-hover-bg: #0b5ed7; 
   --bs-btn-hover-border-color: #0a58ca; 
   --bs-btn-focus-shadow-rgb: 49,132,253; 
