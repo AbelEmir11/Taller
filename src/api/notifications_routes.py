@@ -54,7 +54,7 @@ def send_email_from_notification(notification_id):
         if not client or not client.email:
             return jsonify({"error": "Client email not available"}), 400
 
-        # Enviar correo al cliente
+        # Enviar correo al cliente (capturar excepciones de la librería de envío)
         subject = "Su vehículo está listo"
         body = f"""
         Estimado/a {client.name},
@@ -67,7 +67,13 @@ def send_email_from_notification(notification_id):
         Saludos cordiales,
         El equipo del taller
         """
-        send_email(client.email, subject, body)
+        try:
+            send_email(client.email, subject, body)
+        except Exception as send_err:
+            # Log en servidor para revisar respuesta de Brevo (401 u otros)
+            print("Error sending email via send_email():", str(send_err))
+            # Devolver cuerpo de error mínimo para frontend
+            return jsonify({"error": "Failed to send email", "details": str(send_err)}), 502
 
         # Guardar notificación de tipo email en la base
         email_notification = Notification(
@@ -91,6 +97,7 @@ def send_email_from_notification(notification_id):
 
     except Exception as e:
         db.session.rollback()
+        print("Unexpected error in send_email_from_notification:", str(e))
         return jsonify({"error": str(e)}), 500
 
 

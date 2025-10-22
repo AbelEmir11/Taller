@@ -145,15 +145,17 @@ const AdminDashboard = () => {
           if (response.ok) {
             const data = await response.json();
             setNotifications(data);
+          } else {
+            const text = await response.text();
+            console.error("Error loading notifications:", response.status, text);
           }
         } catch (error) {
           console.error("Error loading notifications:", error);
         }
       };
 
-      if (hasAccess) {
-        loadNotifications();
-      }
+      // Llamar directamente dentro del bloque con token y roleId (no usar hasAccess que aún no se actualiza)
+      loadNotifications();
     }
   }, [store.token, store.setting]);
 

@@ -46,11 +46,15 @@ function UserAppointments() {
           const appointmentsData = await response.json();
           const sortedAppointments = appointmentsData.sort(compareDates);
           setAppointments(sortedAppointments);
-        } else if (response.status === 404) {
-          console.error("No appointments found");
-          setAppointments([]); // Set an empty array if no appointments are found
         } else {
-          console.error("Failed to fetch appointments");
+          const text = await response.text();
+          if (response.status === 404) {
+            console.warn("No appointments found (404)");
+            setAppointments([]);
+          } else {
+            console.error("Failed to fetch appointments:", response.status, text);
+            setAppointments([]);
+          }
         }
       } catch (error) {
         console.error("Error loading appointments:", error);

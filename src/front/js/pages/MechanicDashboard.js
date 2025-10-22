@@ -109,15 +109,19 @@ const MechanicDashboard = () => {
 
         // 📬 Notificar internamente al admin (crear notificación interna)
         try {
-          await fetch(`${apiUrl}/notifications/notify_appointment_complete/${appointmentId}`, {
+          const resp = await fetch(`${apiUrl}/notifications/notify_appointment_complete/${appointmentId}`, {
             method: 'POST',
             headers: {
               Authorization: `Bearer ${token}`,
               ...store.corsEnabled
             }
           });
+          if (!resp.ok) {
+            const text = await resp.text();
+            console.error("Error notifying admin:", resp.status, text);
+          }
         } catch (err) {
-          console.error("Error notifying admin:", err);
+          console.error("Error notifying admin (network):", err);
         }
 
       } else {
