@@ -197,6 +197,10 @@ const AdminDashboard = () => {
   // Nueva función para enviar email desde una notificación
   const sendEmailFromNotification = async (notificationId) => {
     const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("No hay token de autenticación");
+    }
+
     try {
       const response = await fetch(`${apiUrl}/notifications/${notificationId}/send_email`, {
         method: 'POST',
@@ -207,26 +211,31 @@ const AdminDashboard = () => {
         }
       });
 
-      if (response.ok) {
-        // recargar notificaciones
-        const resp = await fetch(`${apiUrl}/notifications`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            ...store.corsEnabled
-          }
-        });
-        if (resp.ok) {
-          const data = await resp.json();
-          setNotifications(data);
-          setStatusMessage("Correo enviado al cliente");
-        }
-      } else {
-        const err = await response.json();
-        setStatusMessage("Error: " + (err.error || 'No se pudo enviar el correo'));
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Error al enviar el correo');
       }
+
+      // Recargar notificaciones solo si el envío fue exitoso
+      const notificationsResponse = await fetch(`${apiUrl}/notifications`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ...store.corsEnabled
+        }
+      });
+
+      if (notificationsResponse.ok) {
+        const notificationsData = await notificationsResponse.json();
+        setNotifications(notificationsData);
+      }
+
+      setStatusMessage("✅ Correo enviado al cliente exitosamente");
+      return data;
     } catch (error) {
-      console.error("Error sending email from notification:", error);
-      setStatusMessage("Error al enviar correo al cliente");
+      console.error("Error sending email:", error);
+      setStatusMessage("❌ " + (error.message || "Error al enviar correo al cliente"));
+      throw error; // Re-throw para que NotificationList pueda manejarlo
     }
   };
 

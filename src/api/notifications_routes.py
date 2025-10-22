@@ -36,25 +36,24 @@ def notify_appointment_complete(appointment_id):
 def send_email_from_notification(notification_id):
     payload = get_jwt()
     if payload.get("role_id") != 1:
-        return jsonify({"error": "Access denied"}), 403
+        return jsonify({"error": "Acceso denegado"}), 403
 
     try:
         notification = Notification.query.get(notification_id)
         if not notification:
-            return jsonify({"error": "Notification not found"}), 404
+            return jsonify({"error": "Notificación no encontrada"}), 404
 
         if not notification.appointment_id:
-            return jsonify({"error": "No appointment associated with this notification"}), 400
+            return jsonify({"error": "No hay turno asociado a esta notificación"}), 400
 
         appointment = Appointment.query.get(notification.appointment_id)
         if not appointment:
-            return jsonify({"error": "Appointment not found"}), 404
+            return jsonify({"error": "Turno no encontrado"}), 404
 
         client = User.query.get(appointment.user_id)
         if not client or not client.email:
-            return jsonify({"error": "Client email not available"}), 400
+            return jsonify({"error": "Email del cliente no disponible"}), 400
 
-        # Enviar correo al cliente (capturar excepciones de la librería de envío)
         subject = "Su vehículo está listo"
         body = f"""
         Estimado/a {client.name},
@@ -67,15 +66,16 @@ def send_email_from_notification(notification_id):
         Saludos cordiales,
         El equipo del taller
         """
-        try:
-            send_email(client.email, subject, body)
-        except Exception as send_err:
-            # Log en servidor para revisar respuesta de Brevo (401 u otros)
-            print("Error sending email via send_email():", str(send_err))
-            # Devolver cuerpo de error mínimo para frontend
-            return jsonify({"error": "Failed to send email", "details": str(send_err)}), 502
 
-        # Guardar notificación de tipo email en la base
+        # Intentar enviar el email
+        email_sent = send_email(client.email, subject, body)
+        if not email_sent:
+            return jsonify({
+                "error": "No se pudo enviar el email",
+                "details": "Error en el servicio de email"
+            }), 502
+
+        # Si el email se envió correctamente, guardar la notificación
         email_notification = Notification(
             title="Correo enviado al cliente",
             message=f"Correo enviado a {client.email} sobre el trabajo completado.",
@@ -85,19 +85,18 @@ def send_email_from_notification(notification_id):
         )
         db.session.add(email_notification)
 
-        # Opcional: marcar la notificación original como leída/procesada si existe ese campo
-        try:
-            if hasattr(notification, 'read'):
-                notification.read = True
-        except:
-            pass
-
+        # Marcar la notificación original como leída
+        notification.read = True
+        
         db.session.commit()
-        return jsonify({"message": "Email sent to client and notification stored"}), 200
+        return jsonify({
+            "message": "Email enviado y notificación guardada",
+            "email": client.email
+        }), 200
 
     except Exception as e:
         db.session.rollback()
-        print("Unexpected error in send_email_from_notification:", str(e))
+        print(f"Error en send_email_from_notification: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 
