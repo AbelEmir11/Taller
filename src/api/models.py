@@ -223,6 +223,8 @@ class Notification(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     read = db.Column(db.Boolean, default=False)
     
+    type = db.Column(db.String(50), default="internal")
+    
     def serialize(self):
         return {
             'id': self.id,
@@ -231,7 +233,8 @@ class Notification(db.Model):
             'user_id': self.user_id,
             'appointment_id': self.appointment_id,
             'created_at': self.created_at,
-            'read': self.read
+            'read': self.read,
+            'type': self.type
         }
 
 class EmailNotification(db.Model):

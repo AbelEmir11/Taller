@@ -12,6 +12,9 @@ from api.routes import api
 from api.admin import setup_admin
 from datetime import timedelta
 from api.commands import setup_commands # Nuevo comando para importación
+from flask_mail import Mail, Message
+from api.notifications_routes import notifications_bp
+
 
 # from models import Person
 
@@ -60,8 +63,30 @@ app.register_blueprint(api, url_prefix='/api')
 
 # Handle/serialize errors like a JSON object
 
+#mail para las notificaciones
+mail = Mail(app)
 
+from flask_mail import Mail
 
+mail = Mail()
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_mapping(
+        MAIL_SERVER=os.getenv("MAIL_SERVER"),
+        MAIL_PORT=int(os.getenv("MAIL_PORT")),
+        MAIL_USE_TLS=os.getenv("MAIL_USE_TLS") == "True",
+        MAIL_USERNAME=os.getenv("MAIL_USERNAME"),
+        MAIL_PASSWORD=os.getenv("MAIL_PASSWORD"),
+        MAIL_DEFAULT_SENDER=os.getenv("MAIL_DEFAULT_SENDER")
+    )
+
+    mail.init_app(app)
+
+    # registrar blueprints aquí
+    return app
+
+app.register_blueprint(notifications_bp, url_prefix="/api")
 
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):

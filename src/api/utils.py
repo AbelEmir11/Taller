@@ -1,8 +1,9 @@
 from flask import jsonify, url_for, current_app
 import os
 import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+from flask_mail import Message
+from flask import current_app
+from api import mail  
 
 class APIException(Exception):
     status_code = 400
@@ -46,26 +47,15 @@ def generate_sitemap(app):
 
 def send_email(to_email, subject, body):
     try:
-        # Usar la configuración de la aplicación
-        from flask import current_app
-        
-        msg = MIMEMultipart()
-        msg['From'] = current_app.config['MAIL_DEFAULT_SENDER']
-        msg['To'] = to_email
-        msg['Subject'] = subject
-        msg.attach(MIMEText(body, 'plain'))
-
-        # Guardar el correo en la base de datos para envío posterior
-        notification = EmailNotification(
-            to_email=to_email,
+        msg = Message(
             subject=subject,
+            recipients=[to_email],
             body=body,
-            status='pending'
+            sender=current_app.config['MAIL_DEFAULT_SENDER']
         )
-        db.session.add(notification)
-        db.session.commit()
-        
+        mail.send(msg)
+        print(f"✅ Email enviado correctamente a {to_email}")
         return True
     except Exception as e:
-        print(f"Error queueing email: {str(e)}")
+        print(f"❌ Error al enviar el email: {str(e)}")
         return False

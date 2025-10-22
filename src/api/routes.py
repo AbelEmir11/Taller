@@ -3,7 +3,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 from flask import Flask, request, jsonify, Blueprint
 from api.models import db, User, Role, Car, Appointment, Service, Comment, Setting, TokenBlockList, Income, Expense, FinancialGoal, Notification
-from api.utils import generate_sitemap, APIException, send_email
+
 from flask import Flask
 from flask_cors import CORS
 from datetime import datetime, timedelta, timezone
@@ -18,7 +18,7 @@ api = Blueprint('api', __name__)
 CORS(api)
 
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// post en /create users from admin
+# // post en /create users from admin
 @api.route('/users', methods=['POST'])
 @jwt_required()
 def create_user():
@@ -48,7 +48,7 @@ def create_user():
     }
     return jsonify(response_body), 201
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// post en /signup
+# // post en /signup
 @api.route('/signupuser', methods=['POST'])
 def create_signupusers():
     data = request.get_json()
@@ -81,7 +81,7 @@ def create_signupusers():
     return jsonify(response_body), 201
 
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// post en /login
+# // post en /login
 @api.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -130,7 +130,7 @@ def login():
 #     # access_token = create_access_token(identity=user.id, additional_claims={"role_id": role.id}, expires_in=3600)
 #     return jsonify(access_token=access_token, role_id=role.id, user_id=user.id), 200
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// post en /ping user
+# / post en /ping user
 @api.route('/pinguser', methods=['GET'])
 @jwt_required()
 def ping_user():
@@ -154,7 +154,7 @@ def ping_user():
     return response, 200
 
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// post en /logout
+# // post en /logout
 @api.route('/logout', methods=['POST'])
 @jwt_required()
 def user_logout():
@@ -164,7 +164,7 @@ def user_logout():
     db.session.commit()
     return jsonify({"msg": "Logout successful"})
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// get a /users con id
+# / get a /users con id
 @api.route('/users/<int:user_id>', methods=['GET'])
 # @jwt_required()
 def get_user(user_id):
@@ -181,7 +181,7 @@ def get_user(user_id):
         }
         return jsonify(response_body), 404
     
-# ///////////////////////////////////////////////////////////////////////////////////////////// DELETE a /users con id
+#// DELETE a /users con id
 @api.route('/users/<int:user_id>', methods=['DELETE'])
 @jwt_required()
 def delete_user(user_id):
@@ -212,7 +212,7 @@ def delete_user(user_id):
     return jsonify({"message": "User and related data deleted successfully"}), 200
 
    
-# ///////////////////////////////////////////////////////////////////////////////////////////// get a /services con id
+#////////////// get a /services con id
 @api.route('/services/<int:services_id>', methods=['GET'])
 @jwt_required()
 def get_service(services_id):
@@ -229,7 +229,7 @@ def get_service(services_id):
         }
         return jsonify(response_body), 404
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// GET a /cars 
+# //////////////////////// GET a /cars 
 @api.route('/cars', methods=['GET'])
 @jwt_required()
 def get_all_cars():
@@ -238,7 +238,7 @@ def get_all_cars():
     return jsonify(car_list), 200
 
     
-# ///////////////////////////////////////////////////////////////////////////////////////////// get a /cars con id
+# ////////////////////// get a /cars con id
 @api.route('/cars/<int:car_id>', methods=['GET'])
 @jwt_required()
 def get_cars(car_id):
@@ -256,7 +256,7 @@ def get_cars(car_id):
         return jsonify(response_body), 404
     
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// get a /cars/user con id del user
+# // get a /cars/user con id del user
 @api.route('/cars/user/<int:owner_id>', methods=['GET'])
 @jwt_required()
 def get_user_cars(owner_id):
@@ -273,7 +273,7 @@ def get_user_cars(owner_id):
         }
         return jsonify(response_body), 404
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// post a /cars 
+# / post a /cars 
 @api.route('/cars', methods=['POST'])
 @jwt_required()
 def create_car():
@@ -296,7 +296,7 @@ def create_car():
     response_body = new_car.serialize()
     return jsonify(response_body), 201
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// PATCH a /cars + id 
+#// PATCH a /cars + id 
 @api.route('/cars/<int:car_id>', methods=['PATCH'])
 @jwt_required()
 def update_car(car_id):
@@ -316,7 +316,7 @@ def update_car(car_id):
     db.session.commit()
     return jsonify(car.serialize()), 200
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// DELETE a /cars + id 
+# / DELETE a /cars + id 
 @api.route('/cars/<int:car_id>', methods=['DELETE'])
 @jwt_required()
 def delete_car(car_id):
@@ -333,7 +333,7 @@ def delete_car(car_id):
     return jsonify({"message": "Car deleted successfully"}), 200
 
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// GET a /comments?appointment_id=
+# / GET a /comments?appointment_id=
 @api.route('/comments', methods=['GET'])
 @jwt_required()
 def get_comments():
@@ -346,7 +346,7 @@ def get_comments():
         return jsonify({"msg": "No appointment_id provided"}), 400
 
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// post a /comments 
+# // post a /comments 
 @api.route('/comments', methods=['POST'])
 @jwt_required()
 def create_comment():
@@ -373,7 +373,7 @@ def create_comment():
 
 
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// post a /services 
+# // post a /services 
 @api.route('/services', methods=['POST'])
 @jwt_required()
 def create_service():
@@ -394,7 +394,7 @@ def create_service():
     response_body = new_service.serialize()
     return jsonify(response_body), 201
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// get a /services 
+# /// get a /services 
 @api.route('/services', methods=['GET'])
 def get_services():
     services_query = Service.query.all()
@@ -975,7 +975,7 @@ def update_financial_goal(goal_id):
     db.session.commit()
     return jsonify(goal.serialize()), 200
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// GET /financial-summary
+# // GET /financial-summary
 @api.route('/financial-summary', methods=['GET'])
 @jwt_required()
 def get_financial_summary():
@@ -1012,7 +1012,7 @@ def get_financial_summary():
         'current_month': now.strftime('%Y-%m')
     }), 200
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// post en /appointments/<id>/complete
+# // post en /appointments/<id>/complete
 @api.route('/appointments/<int:appointment_id>/complete', methods=['PUT'])
 @jwt_required()
 def complete_appointment(appointment_id):
@@ -1023,49 +1023,9 @@ def complete_appointment(appointment_id):
 
         appointment.status = "completed"
         
-        # Crear notificación para el admin
-        admin_notification = Notification(
-            title="Trabajo Completado",
-            message=f"El trabajo del vehículo {appointment.car.license_plate} ha sido completado",
-            user_id=1,  # ID del admin
-            appointment_id=appointment_id
-        )
-        db.session.add(admin_notification)
 
-        # Obtener información del cliente
-        client = User.query.get(appointment.user_id)
-        if client and client.email:
-            # Enviar correo al cliente
-            email_subject = "Su vehículo está listo"
-            email_body = f"""
-            Estimado/a {client.name},
-
-            Le informamos que su vehículo {appointment.car.license_plate} está listo para ser retirado.
-            
-            Servicio realizado: {appointment.service.name}
-            Fecha de finalización: {datetime.now().strftime('%Y-%m-%d %H:%M')}
-
-            Por favor, acérquese al taller en nuestro horario de atención.
-
-            Saludos cordiales,
-            El equipo del taller
-            """
-            send_email(client.email, email_subject, email_body)
-
-        db.session.commit()
         return jsonify({"message": "Appointment completed and notification sent"}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
-
-# ///////////////////////////////////////////////////////////////////////////////////////////// get a /notifications
-@api.route('/notifications', methods=['GET'])
-@jwt_required()
-def get_notifications():
-    payload = get_jwt()
-    if payload.get("role_id") != 1:
-        return jsonify({"error": "Access denied"}), 403
-
-    notifications = Notification.query.order_by(Notification.created_at.desc()).all()
-    return jsonify([notif.serialize() for notif in notifications]), 200
 
