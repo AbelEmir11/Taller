@@ -106,6 +106,20 @@ const MechanicDashboard = () => {
         setStatusMessage("Trabajo marcado como completado y notificación enviada");
         // Recargar la lista de citas
         actions.loadAppointments();
+
+        // 📬 Notificar internamente al admin (crear notificación interna)
+        try {
+          await fetch(`${apiUrl}/notifications/notify_appointment_complete/${appointmentId}`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              ...store.corsEnabled
+            }
+          });
+        } catch (err) {
+          console.error("Error notifying admin:", err);
+        }
+
       } else {
         const error = await response.json();
         setStatusMessage("Error: " + error.error);

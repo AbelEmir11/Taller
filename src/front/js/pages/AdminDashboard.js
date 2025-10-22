@@ -192,6 +192,42 @@ const AdminDashboard = () => {
     }
   };
 
+  // Nueva función para enviar email desde una notificación
+  const sendEmailFromNotification = async (notificationId) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(`${apiUrl}/notifications/${notificationId}/send_email`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          ...store.corsEnabled
+        }
+      });
+
+      if (response.ok) {
+        // recargar notificaciones
+        const resp = await fetch(`${apiUrl}/notifications`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            ...store.corsEnabled
+          }
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          setNotifications(data);
+          setStatusMessage("Correo enviado al cliente");
+        }
+      } else {
+        const err = await response.json();
+        setStatusMessage("Error: " + (err.error || 'No se pudo enviar el correo'));
+      }
+    } catch (error) {
+      console.error("Error sending email from notification:", error);
+      setStatusMessage("Error al enviar correo al cliente");
+    }
+  };
+
   return (
     <div className="container py-5">
       <div className="d-flex flex-column dashboard">
@@ -292,7 +328,7 @@ const AdminDashboard = () => {
           <div className="alert alert-success mt-3">{statusMessage}</div>
         )}
         {hasAccess && (
-          <NotificationList notifications={notifications} />
+          <NotificationList notifications={notifications} onSendEmail={sendEmailFromNotification} />
         )}
       </div>
     </div>
