@@ -4,6 +4,7 @@ const NotificationList = ({ notifications, onSendEmail }) => {
   const [loading, setLoading] = useState({});
   const [error, setError] = useState({});
   const [success, setSuccess] = useState({});
+  const [isLoading, setIsLoading] = useState(true);  // Add this line
 
   const handleSendEmail = async (notificationId) => {
     setLoading(prev => ({ ...prev, [notificationId]: true }));
@@ -24,7 +25,13 @@ const NotificationList = ({ notifications, onSendEmail }) => {
     <div className="notifications-container mt-4">
       <h3>Notificaciones</h3>
       <div className="list-group">
-        {notifications.length === 0 ? (
+        {isLoading ? (
+          <div className="list-group-item text-center">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+        ) : notifications.length === 0 ? (
           <div className="list-group-item">
             <p className="mb-1">No hay notificaciones.</p>
           </div>

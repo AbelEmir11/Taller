@@ -214,7 +214,6 @@ class FinancialGoal(db.Model):
 
 class Notification(db.Model):
     __tablename__ = 'notifications'
-    
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     message = db.Column(db.Text, nullable=False)
@@ -222,19 +221,18 @@ class Notification(db.Model):
     appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     read = db.Column(db.Boolean, default=False)
-    
-    type = db.Column(db.String(50), default="internal")
-    
+    type = db.Column(db.String(20), nullable=False, default='internal')  # 'internal' o 'email'
+
     def serialize(self):
         return {
-            'id': self.id,
-            'title': self.title,
-            'message': self.message,
-            'user_id': self.user_id,
-            'appointment_id': self.appointment_id,
-            'created_at': self.created_at,
-            'read': self.read,
-            'type': self.type
+            "id": self.id,
+            "title": self.title,
+            "message": self.message,
+            "user_id": self.user_id,
+            "appointment_id": self.appointment_id,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "read": self.read,
+            "type": self.type
         }
 
 class EmailNotification(db.Model):

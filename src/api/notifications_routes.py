@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt
 from api.models import db, Notification, User, Appointment
 from datetime import datetime
+import traceback
 from api.utils import send_email  # ya lo estás usando
 
 notifications_bp = Blueprint('notifications', __name__)
@@ -14,19 +15,30 @@ def notify_appointment_complete(appointment_id):
         if not appointment:
             return jsonify({"error": "Appointment not found"}), 404
 
-        # 📌 Crear solo notificación interna para admin (no enviar email aquí)
+        # Verificar si ya existe una notificación para este appointment
+        existing_notification = Notification.query.filter_by(
+            appointment_id=appointment_id,
+            type='internal'
+        ).first()
+        
+        if existing_notification:
+            return jsonify({"message": "Notification already exists"}), 200
+
         admin_notification = Notification(
             title="Trabajo Completado",
-            message=f"El trabajo del vehículo {appointment.car.license_plate} ha sido completado",
-            user_id=1,  # ID del admin
+            message=f"El trabajo del vehículo {appointment.car.license_plate if appointment.car else 'N/A'} ha sido completado",
+            user_id=1,
             appointment_id=appointment_id,
-            type="internal"
+            type="internal",
+            read=False
         )
         db.session.add(admin_notification)
         db.session.commit()
         return jsonify({"message": "Internal notification created"}), 200
 
     except Exception as e:
+        print("Error en notify_appointment_complete:", str(e))
+        print(traceback.format_exc())
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
@@ -104,9 +116,14 @@ def send_email_from_notification(notification_id):
 @notifications_bp.route('/notifications', methods=['GET'])
 @jwt_required()
 def get_notifications():
-    payload = get_jwt()
-    if payload.get("role_id") != 1:
-        return jsonify({"error": "Access denied"}), 403
+    try:
+        payload = get_jwt()
+        if payload.get("role_id") != 1:
+            return jsonify({"error": "Access denied"}), 403
 
-    notifications = Notification.query.order_by(Notification.created_at.desc()).all()
-    return jsonify([notif.serialize() for notif in notifications]), 200
+        notifications = Notification.query.order_by(Notification.created_at.desc()).all()
+        return jsonify([notif.serialize() for notif in notifications]), 200
+    except Exception as e:
+        print("Error en get_notifications:", str(e))
+        print(traceback.format_exc())  # Imprimir stack trace completo
+        return jsonify({"error": "Internal server error"}), 500
