@@ -16,6 +16,7 @@ from flask_mail import Mail, Message
 from api.notifications_routes import notifications_bp
 
 
+ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
@@ -64,8 +65,12 @@ app.register_blueprint(api, url_prefix='/api')
 # Handle/serialize errors like a JSON object
 
 # Inicializar Mail usando la instancia definida en api package (api.__init__.py)
-from api import mail as mail_ext
-mail_ext.init_app(app)
+#from api import mail as mail_ext
+#mail_ext.init_app(app)
+# Evitar importar mail desde el paquete 'api' (posible conflicto en deploy).
+# Inicializamos Mail localmente y lo registramos en la app.
+mail = Mail()
+mail.init_app(app)
 
 # Registrar blueprint de notificaciones (queda bajo /api/...)
 app.register_blueprint(notifications_bp, url_prefix="/api")
