@@ -3,7 +3,6 @@ import os
 import smtplib
 from flask_mail import Message
 from flask import current_app
-from api import mail  
 
 class APIException(Exception):
     status_code = 400
@@ -47,15 +46,22 @@ def generate_sitemap(app):
 
 def send_email(to_email, subject, body):
     try:
+        # Obtener la instancia de Mail inicializada en la aplicación
+        mail_ext = current_app.extensions.get('mail')
+        if not mail_ext:
+            print("❌ Mail extension not initialized")
+            return False
+
         msg = Message(
             subject=subject,
             recipients=[to_email],
             body=body,
-            sender=current_app.config['MAIL_DEFAULT_SENDER']
+            sender=current_app.config.get('MAIL_DEFAULT_SENDER')
         )
-        mail.send(msg)
+        mail_ext.send(msg)
         print(f"✅ Email enviado correctamente a {to_email}")
         return True
     except Exception as e:
+        # Loguear error completo en servidor para facilitar debugging (Brevo/API keys)
         print(f"❌ Error al enviar el email: {str(e)}")
         return False

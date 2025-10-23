@@ -16,9 +16,6 @@ from flask_mail import Mail, Message
 from api.notifications_routes import notifications_bp
 
 
-# from models import Person
-
-ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
@@ -26,10 +23,13 @@ app.url_map.strict_slashes = False
 
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET")
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=3)
-# Agregar configuración de correo
-app.config['MAIL_USERNAME'] = 'autoagendanotificaciones@example.com'
-app.config['MAIL_PASSWORD'] = '123456'
-app.config['MAIL_DEFAULT_SENDER'] = 'AutoAgenda <autoagendanotificaciones@example.com>'
+# Agregar configuración de correo (leer de env en producción)
+app.config['MAIL_SERVER'] = os.getenv("MAIL_SERVER", app.config.get('MAIL_SERVER'))
+app.config['MAIL_PORT'] = int(os.getenv("MAIL_PORT", app.config.get('MAIL_PORT', 587)))
+app.config['MAIL_USE_TLS'] = os.getenv("MAIL_USE_TLS", "True") == "True"
+app.config['MAIL_USERNAME'] = os.getenv("MAIL_USERNAME", 'autoagendanotificaciones@example.com')
+app.config['MAIL_PASSWORD'] = os.getenv("MAIL_PASSWORD", '123456')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv("MAIL_DEFAULT_SENDER", 'AutoAgenda <autoagendanotificaciones@example.com>')
 
 jwt = JWTManager(app)
 
@@ -63,29 +63,11 @@ app.register_blueprint(api, url_prefix='/api')
 
 # Handle/serialize errors like a JSON object
 
-#mail para las notificaciones
-mail = Mail(app)
+# Inicializar Mail usando la instancia definida en api package (api.__init__.py)
+from api import mail as mail_ext
+mail_ext.init_app(app)
 
-from flask_mail import Mail
-
-mail = Mail()
-
-def create_app():
-    app = Flask(__name__)
-    app.config.from_mapping(
-        MAIL_SERVER=os.getenv("MAIL_SERVER"),
-        MAIL_PORT=int(os.getenv("MAIL_PORT")),
-        MAIL_USE_TLS=os.getenv("MAIL_USE_TLS") == "True",
-        MAIL_USERNAME=os.getenv("MAIL_USERNAME"),
-        MAIL_PASSWORD=os.getenv("MAIL_PASSWORD"),
-        MAIL_DEFAULT_SENDER=os.getenv("MAIL_DEFAULT_SENDER")
-    )
-
-    mail.init_app(app)
-
-    # registrar blueprints aquí
-    return app
-
+# Registrar blueprint de notificaciones (queda bajo /api/...)
 app.register_blueprint(notifications_bp, url_prefix="/api")
 
 @app.errorhandler(APIException)
@@ -117,4 +99,4 @@ def serve_any_other_file(path):
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=PORT, debug=True)
-    
+
