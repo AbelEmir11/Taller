@@ -30,6 +30,7 @@ const AdminDashboard = () => {
     password: "********",
   });
   const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const handleSettingModalOpen = () => {
     setIsSettingModalOpen(true);
@@ -145,6 +146,8 @@ const AdminDashboard = () => {
           if (response.ok) {
             const data = await response.json();
             setNotifications(data);
+            const unread = data.filter(n => !n.read).length;
+            setUnreadCount(unread);
           } else {
             const text = await response.text();
             console.error("Error loading notifications:", response.status, text);
@@ -154,8 +157,16 @@ const AdminDashboard = () => {
         }
       };
 
-      // Llamar directamente dentro del bloque con token y roleId (no usar hasAccess que aún no se actualiza)
+      // cargar inicialmente
       loadNotifications();
+
+      // polling sencillo para refrescar notificaciones
+      const intervalId = setInterval(() => {
+        loadNotifications();
+      }, 7000);
+
+      // limpiar al desmontar
+      return () => clearInterval(intervalId);
     }
   }, [store.token, store.setting]);
 
@@ -243,6 +254,15 @@ const AdminDashboard = () => {
     <div className="container py-5">
       <div className="d-flex flex-column dashboard">
         <h1>Panel de administrador</h1>
+        {/* Icono de notificaciones */}
+        <div className="text-end mb-2">
+          <button className="btn btn-outline-secondary position-relative" type="button">
+            <i className="bi bi-bell"></i> {/* requiere bootstrap-icons si está disponible */}
+            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              {unreadCount}
+            </span>
+          </button>
+        </div>
         {!hasAccess ? (
           <div className="card p-5">
             <div className="card-body mx-auto">

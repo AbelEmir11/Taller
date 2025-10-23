@@ -53,6 +53,28 @@ const MechanicAppointmentList = () => {
             app.id === appointmentId ? { ...app, status } : app
           )
         );
+
+        // Si el estado pasó a "Completed", notificar internamente al admin
+        if (status && status.toLowerCase() === "completed") {
+          try {
+            const notifyResp = await fetch(`${apiUrl}/notifications/notify_appointment_complete/${appointmentId}`, {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                ...store.corsEnabled
+              }
+            });
+            if (!notifyResp.ok) {
+              const txt = await notifyResp.text();
+              console.error('Error notifying admin (notify endpoint):', notifyResp.status, txt);
+            } else {
+              console.log('Admin notificado (notify endpoint) para appointment', appointmentId);
+            }
+          } catch (err) {
+            console.error('Network error notifying admin:', err);
+          }
+        }
+
       } else {
         const errorData = await response.json(); 
         console.error('Failed to update appointment status', errorData);

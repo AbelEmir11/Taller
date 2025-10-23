@@ -506,7 +506,7 @@ def create_appointment():
     else:
         return jsonify({"error": "No available slots for this time"}), 400
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// PATCH a /appointments con id
+# /// PATCH a /appointments con id
 @api.route('/appointments/<int:appointment_id>', methods=['PATCH'])
 @jwt_required()
 def update_appointment(appointment_id):
@@ -516,13 +516,34 @@ def update_appointment(appointment_id):
 
     data = request.get_json()
     status = data.get('status')
+    created_notification = False
     if status:
         appointment.status = status
 
-    db.session.commit()
-    return jsonify({"msg": "Appointment updated successfully"}), 200
+        # Si el estado cambia a completed -> crear notificación interna para admin
+        try:
+            if status and status.lower() == "completed":
+                admin_notification = Notification(
+                    title="Trabajo Completado",
+                    message=f"El trabajo del vehículo {appointment.car.license_plate if appointment.car else 'N/A'} ha sido completado",
+                    user_id=1,  # admin por defecto
+                    appointment_id=appointment.id,
+                    type="internal",
+                    read=False
+                )
+                db.session.add(admin_notification)
+                created_notification = True
+        except Exception as notif_err:
+            # no bloquear la actualización por un fallo en la notificación
+            print("Error creando notificación al actualizar cita:", str(notif_err))
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// get a /appointments con id
+    db.session.commit()
+    resp = {"msg": "Appointment updated successfully"}
+    if created_notification:
+        resp["notification"] = "created"
+    return jsonify(resp), 200
+
+# ////// get a /appointments con id
 @api.route('/appointments/<int:appointment_id>', methods=['GET'])
 @jwt_required()
 def get_appointment(appointment_id):
@@ -1022,9 +1043,23 @@ def complete_appointment(appointment_id):
             return jsonify({"error": "Appointment not found"}), 404
 
         appointment.status = "completed"
-        
 
-        return jsonify({"message": "Appointment completed and notification sent"}), 200
+        # Crear notificación interna para admin
+        try:
+            admin_notification = Notification(
+                title="Trabajo Completado",
+                message=f"El trabajo del vehículo {appointment.car.license_plate if appointment.car else 'N/A'} ha sido completado",
+                user_id=1,
+                appointment_id=appointment.id,
+                type="internal",
+                read=False
+            )
+            db.session.add(admin_notification)
+        except Exception as notif_err:
+            print("Error creando notificación en complete_appointment:", str(notif_err))
+
+        db.session.commit()
+        return jsonify({"message": "Appointment completed and notification created"}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
