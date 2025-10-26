@@ -19,24 +19,22 @@ def notify_appointment_complete(appointment_id):
 
         # Obtener datos relacionados de forma segura
         car = Car.query.get(appointment.car_id) if appointment.car_id else None
-        service = Service.query.get(appointment.service_id) if appointment.service_id else None
         license_plate = car.license_plate if car else 'N/A'
 
         # Verificar si ya existe una notificación para este appointment
         existing_notification = Notification.query.filter_by(
-            appointment_id=appointment_id,
-            type='internal'
+            appointment_id=appointment_id
         ).first()
         
         if existing_notification:
             return jsonify({"message": "Notification already exists"}), 200
 
+        # Crear notificación sin usar el campo 'type' (evitar errores si no existe en modelo/DB)
         admin_notification = Notification(
             title="Trabajo Completado",
             message=f"El trabajo del vehículo {license_plate} ha sido completado",
             user_id=1,
             appointment_id=appointment_id,
-            type="internal",
             read=False
         )
         db.session.add(admin_notification)
@@ -101,13 +99,13 @@ def send_email_from_notification(notification_id):
             print("Error sending email via send_email():", str(send_err))
             return jsonify({"error": "Failed to send email", "details": str(send_err)}), 502
 
-        # Guardar notificación de tipo email en la base
+        # Guardar notificación de tipo email sin campo 'type' (si no existe en DB)
         email_notification = Notification(
             title="Correo enviado al cliente",
             message=f"Correo enviado a {client.email} sobre el trabajo completado.",
             user_id=1,
             appointment_id=appointment.id,
-            type="email"
+            read=False
         )
         db.session.add(email_notification)
 

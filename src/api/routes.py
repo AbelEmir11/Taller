@@ -515,6 +515,9 @@ def update_appointment(appointment_id):
         return jsonify({"error": "Appointment not found"}), 404
 
     data = request.get_json()
+    if not data:
+        return jsonify({"error": "No JSON body provided"}), 400
+
     status = data.get('status')
     created_notification = False
     if status:
@@ -532,7 +535,6 @@ def update_appointment(appointment_id):
                     message=f"El trabajo del vehículo {license_plate} ha sido completado",
                     user_id=1,  # admin por defecto
                     appointment_id=appointment.id,
-                    type="internal",
                     read=False
                 )
                 db.session.add(admin_notification)
@@ -1052,14 +1054,13 @@ def complete_appointment(appointment_id):
         car = Car.query.get(appointment.car_id) if appointment.car_id else None
         license_plate = car.license_plate if car else 'N/A'
 
-        # Crear notificación interna para admin
+        # Crear notificación interna para admin (sin 'type')
         try:
             admin_notification = Notification(
                 title="Trabajo Completado",
                 message=f"El trabajo del vehículo {license_plate} ha sido completado",
                 user_id=1,
                 appointment_id=appointment.id,
-                type="internal",
                 read=False
             )
             db.session.add(admin_notification)
@@ -1070,5 +1071,6 @@ def complete_appointment(appointment_id):
         return jsonify({"message": "Appointment completed and notification created"}), 200
     except Exception as e:
         db.session.rollback()
+        print("Error en complete_appointment:", str(e))
         return jsonify({"error": str(e)}), 500
 

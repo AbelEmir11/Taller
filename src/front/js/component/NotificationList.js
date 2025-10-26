@@ -47,8 +47,8 @@ const NotificationList = ({ notifications, onSendEmail }) => {
               </div>
               <p className="mb-1">{notification.message}</p>
 
-              {/* Si es notificación interna con appointment_id, permitir avisar al cliente */}
-              {notification.type === 'internal' && notification.appointment_id && onSendEmail && (
+              {/* Mostrar botón si la notificación tiene appointment_id (DB puede no tener 'type') */}
+              {notification.appointment_id && onSendEmail && (
                 <div className="mt-2">
                   {error[notification.id] && (
                     <div className="alert alert-danger py-1">{error[notification.id]}</div>
