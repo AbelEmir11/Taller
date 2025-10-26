@@ -1,81 +1,249 @@
-/* General Styles */
+/* ====================================
+   ESTILOS GENERALES ADMIN DASHBOARD
+   ==================================== */
+
 .btnSetting {
   border: 1px solid #ccc;
+  transition: all 0.3s ease;
 }
-.h3, h3 {
+
+.btnSetting:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+h3 {
   font-size: 1.3rem;
   margin-top: 15px;
 }
+
 .dashboard {
   text-align: center;
 }
+
+/* ====================================
+   HEADER DEL DASHBOARD
+   ==================================== */
+
+.dashboard-header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.dashboard-header-section h1 {
+  color: white;
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* ====================================
+   CAMPANA DE NOTIFICACIONES
+   ==================================== */
+
+.notification-bell-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-notification-bell {
+  position: relative;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-notification-bell:hover {
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.notification-count-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border: 3px solid white;
+  animation: pulse-badge 2s infinite;
+}
+
+@keyframes pulse-badge {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+.notification-text {
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  animation: fadeIn 0.5s ease;
+}
+
+/* ====================================
+   ESTADÍSTICAS
+   ==================================== */
 
 .stats {
   margin: 20px 0;
 }
 
-.stat1 {
-  background-color: #ECF2FF;
-  border: 2px solid #ccc;
-  border-radius: 5%;
+.stat1, .stat2, .stat3, .stat4, .stat5, .stat6 {
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
   margin-top: 15px;
-  padding: 10px;
-  padding-top: 20px;
+  padding: 20px;
+  padding-top: 25px;
   text-align: center;
-}
-.stat2 {
-  background-color: #E7FFFB;
-  border: 2px solid #ccc;
-  border-radius: 5%;
-  margin-top: 15px;
-  padding: 10px;
-  padding-top: 20px;
-  text-align: center;
-}
-.stat3 {
-  background-color: #FEF5E5;
-  border: 2px solid #ccc;
-  border-radius: 5%;
-  margin-top: 15px;
-  padding: 10px;
-  padding-top: 20px;
-  text-align: center;
-}
-.stat4 {
-  background-color: #FCEDE9;
-  border: 2px solid #ccc;
-  border-radius: 5%;
-  margin-top: 15px;
-  padding: 10px;
-  padding-top: 20px;
-  text-align: center;
-}
-.stat5 {
-  background-color: #EBF2FF;
-  border: 2px solid #ccc;
-  border-radius: 5%;
-  margin-top: 15px;
-  padding: 10px;
-  padding-top: 20px;
-  text-align: center;
-}
-.stat6 {
-  background-color: #F0F8FF;
-  border: 2px solid #007bff;
-  border-radius: 5%;
-  margin-top: 15px;
-  padding: 10px;
-  padding-top: 20px;
-  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-/* User List Styles */
+.stat1::before, .stat2::before, .stat3::before, 
+.stat4::before, .stat5::before, .stat6::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  transition: height 0.3s ease;
+}
+
+.stat1 {
+  background: linear-gradient(135deg, #ECF2FF 0%, #E3EEFF 100%);
+}
+
+.stat1::before {
+  background: linear-gradient(90deg, #4e73df 0%, #224abe 100%);
+}
+
+.stat2 {
+  background: linear-gradient(135deg, #E7FFFB 0%, #D4FFF6 100%);
+}
+
+.stat2::before {
+  background: linear-gradient(90deg, #1cc88a 0%, #13855c 100%);
+}
+
+.stat3 {
+  background: linear-gradient(135deg, #FEF5E5 0%, #FCEDC8 100%);
+}
+
+.stat3::before {
+  background: linear-gradient(90deg, #f6c23e 0%, #dda20a 100%);
+}
+
+.stat4 {
+  background: linear-gradient(135deg, #FCEDE9 0%, #F9E0D9 100%);
+}
+
+.stat4::before {
+  background: linear-gradient(90deg, #e74a3b 0%, #be2617 100%);
+}
+
+.stat5 {
+  background: linear-gradient(135deg, #EBF2FF 0%, #DCE9FF 100%);
+}
+
+.stat5::before {
+  background: linear-gradient(90deg, #36b9cc 0%, #258391 100%);
+}
+
+.stat6 {
+  background: linear-gradient(135deg, #F0F8FF 0%, #E0F0FF 100%);
+  border-color: #007bff;
+}
+
+.stat6::before {
+  background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
+}
+
+.stat1:hover, .stat2:hover, .stat3:hover,
+.stat4:hover, .stat5:hover, .stat6:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.stat1:hover::before, .stat2:hover::before, .stat3:hover::before,
+.stat4:hover::before, .stat5:hover::before, .stat6:hover::before {
+  height: 6px;
+}
+
+.stat1 img, .stat2 img, .stat3 img,
+.stat4 img, .stat5 img, .stat6 img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+}
+
+.stat1:hover img, .stat2:hover img, .stat3:hover img,
+.stat4:hover img, .stat5:hover img, .stat6:hover img {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.stat1 p, .stat2 p, .stat3 p,
+.stat4 p, .stat5 p, .stat6 p {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 10px 0;
+  color: #2c3e50;
+}
+
+/* ====================================
+   USER LIST
+   ==================================== */
+
 .user-list {
-  margin: 20px;
+  margin: 40px 0;
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .user-list .table-responsive {
   overflow-x: auto;
+  border-radius: 8px;
+}
+
+.user-list table {
+  margin-bottom: 0;
+}
+
+.user-list table th {
+  background-color: #667eea;
+  color: white;
+  font-weight: 600;
+  border: none;
+  padding: 15px;
 }
 
 .user-list table th button {
@@ -83,20 +251,38 @@
   border: none;
   cursor: pointer;
   font-weight: bold;
-  color: inherit;
+  color: white;
+  transition: transform 0.2s ease;
+}
+
+.user-list table th button:hover {
+  transform: scale(1.1);
 }
 
 .user-list table th button:focus {
   outline: none;
 }
 
-/* Modal Styles */
+.user-list table td {
+  padding: 12px 15px;
+  vertical-align: middle;
+}
+
+.user-list table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.user-list table tbody tr:hover {
+  background-color: #f8f9ff;
+}
+
+/* ====================================
+   MODALES
+   ==================================== */
+
 .modal.show {
   display: block;
 }
-
-/* ModalProfile */
-
 
 .profile-modal {
   display: flex;
@@ -111,16 +297,30 @@
   overflow: hidden;
   outline: 0;
   background: rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.3s ease;
 }
 
 .profile-modal-content {
   background-color: #fff;
   border: 1px solid #dee2e6;
-  border-radius: 0.3rem;
+  border-radius: 12px;
   outline: 0;
   max-width: 500px;
   width: 100%;
   padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .profile-modal-header {
@@ -138,10 +338,158 @@
 
 .profile-modal-title {
   margin: 0;
+  font-weight: 600;
 }
 
 .close {
   background: none;
   border: none;
   font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.close:hover {
+  transform: rotate(90deg);
+  color: #e74a3b;
+}
+
+/* ====================================
+   ALERTAS
+   ==================================== */
+
+.alert {
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  animation: slideDown 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.alert-success {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  border-left: 4px solid #28a745;
+}
+
+.alert-danger {
+  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+  border-left: 4px solid #dc3545;
+}
+
+/* ====================================
+   RESPONSIVE
+   ==================================== */
+
+@media (max-width: 992px) {
+  .dashboard-header-section {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .dashboard-header-section h1 {
+    font-size: 1.5rem;
+  }
+
+  .btn-notification-bell {
+    width: 50px;
+    height: 50px;
+    font-size: 1.25rem;
+  }
+
+  .notification-count-badge {
+    width: 24px;
+    height: 24px;
+    font-size: 0.7rem;
+  }
+
+  .stats .col {
+    min-width: 250px;
+    margin-bottom: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header-section {
+    padding: 1rem;
+  }
+
+  .dashboard-header-section h1 {
+    font-size: 1.25rem;
+  }
+
+  .notification-text {
+    font-size: 0.875rem;
+  }
+
+  .stats {
+    flex-direction: column;
+  }
+
+  .stat1, .stat2, .stat3, .stat4, .stat5, .stat6 {
+    margin: 10px 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .btn-notification-bell {
+    width: 45px;
+    height: 45px;
+    font-size: 1.125rem;
+  }
+
+  .notification-bell-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .profile-modal-content {
+    margin: 1rem;
+    max-width: calc(100% - 2rem);
+  }
+}
+
+/* ====================================
+   ANIMACIONES GENERALES
+   ==================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Efecto de carga suave para todo el dashboard */
+.dashboard > * {
+  animation: fadeIn 0.5s ease;
+}
+
+/* Hover effects mejorados para botones */
+.btn {
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
