@@ -7,6 +7,8 @@ from api.utils import send_email  # ya lo estás usando
 
 notifications_bp = Blueprint('notifications', __name__)
 
+# Añadir alias con prefijo "notifications" para compatibilidad con frontend antiguo
+@notifications_bp.route('/notifications/notify_appointment_complete/<int:appointment_id>', methods=['POST'])
 @notifications_bp.route('/notify_appointment_complete/<int:appointment_id>', methods=['POST'])
 @jwt_required()
 def notify_appointment_complete(appointment_id):

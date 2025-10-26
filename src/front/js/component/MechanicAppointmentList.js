@@ -57,7 +57,7 @@ const MechanicAppointmentList = () => {
         // Si el estado pasó a "Completed", notificar internamente al admin
         if (status && status.toLowerCase() === "completed") {
           try {
-            const notifyResp = await fetch(`${apiUrl}/notifications/notify_appointment_complete/${appointmentId}`, {
+            const notifyResp = await fetch(`${apiUrl}/notify_appointment_complete/${appointmentId}`, {
               method: 'POST',
               headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`,

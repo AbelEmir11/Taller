@@ -109,7 +109,7 @@ const MechanicDashboard = () => {
 
         // 📬 Notificar internamente al admin (crear notificación interna)
         try {
-          const resp = await fetch(`${apiUrl}/notifications/notify_appointment_complete/${appointmentId}`, {
+          const resp = await fetch(`${apiUrl}/notify_appointment_complete/${appointmentId}`, {
             method: 'POST',
             headers: {
               Authorization: `Bearer ${token}`,
