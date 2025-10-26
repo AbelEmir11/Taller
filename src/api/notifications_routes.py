@@ -7,8 +7,8 @@ import traceback
 
 notifications_bp = Blueprint('notifications', __name__)
 
-# Añadir alias con prefijo "notifications" para compatibilidad con frontend antiguo
-@notifications_bp.route('/notifications/notify_appointment_complete/<int:appointment_id>', methods=['POST'])
+
+
 @notifications_bp.route('/notify_appointment_complete/<int:appointment_id>', methods=['POST'])
 @jwt_required()
 def notify_appointment_complete(appointment_id):
@@ -48,7 +48,7 @@ def notify_appointment_complete(appointment_id):
         return jsonify({"error": str(e)}), 500
 
 # Nuevo endpoint: el admin puede enviar el email al cliente desde la notificación
-@notifications_bp.route('/notifications/<int:notification_id>/send_email', methods=['POST'])
+@notifications_bp.route('/<int:notification_id>/send_email', methods=['POST'])
 @jwt_required()
 def send_email_from_notification(notification_id):
     payload = get_jwt()
@@ -127,7 +127,7 @@ def send_email_from_notification(notification_id):
 
 
 # 📬 Obtener todas las notificaciones (solo admin)
-@notifications_bp.route('/notifications', methods=['GET'])
+@notifications_bp.route('', methods=['GET'])
 @jwt_required()
 def get_notifications():
     try:

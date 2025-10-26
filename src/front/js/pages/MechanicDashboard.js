@@ -3,8 +3,7 @@ import MechanicAppointmentList from '../component/MechanicAppointmentList';
 import UserProfileModal from '../component/UserProfileModal';
 import '../../styles/mechanicdashboard.css';
 import { Context } from '../store/appContext';
-import heroImg from "../../img/hero-img.png";
-import fondo3 from "../../img/fondo3.jpg";
+
 const MechanicDashboard = () => {
   const { store, actions } = useContext(Context);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
