@@ -1,9 +1,9 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt
-from api.models import db, Notification, User, Appointment
+from api.models import db, Notification, User, Appointment, Car, Service
 from datetime import datetime
-import traceback
 from api.utils import send_email  # ya lo estás usando
+import traceback
 
 notifications_bp = Blueprint('notifications', __name__)
 
@@ -17,6 +17,11 @@ def notify_appointment_complete(appointment_id):
         if not appointment:
             return jsonify({"error": "Appointment not found"}), 404
 
+        # Obtener datos relacionados de forma segura
+        car = Car.query.get(appointment.car_id) if appointment.car_id else None
+        service = Service.query.get(appointment.service_id) if appointment.service_id else None
+        license_plate = car.license_plate if car else 'N/A'
+
         # Verificar si ya existe una notificación para este appointment
         existing_notification = Notification.query.filter_by(
             appointment_id=appointment_id,
@@ -28,7 +33,7 @@ def notify_appointment_complete(appointment_id):
 
         admin_notification = Notification(
             title="Trabajo Completado",
-            message=f"El trabajo del vehículo {appointment.car.license_plate if appointment.car else 'N/A'} ha sido completado",
+            message=f"El trabajo del vehículo {license_plate} ha sido completado",
             user_id=1,
             appointment_id=appointment_id,
             type="internal",
@@ -68,13 +73,19 @@ def send_email_from_notification(notification_id):
         if not client or not client.email:
             return jsonify({"error": "Email del cliente no disponible"}), 400
 
+        # Obtener car y service de forma segura
+        car = Car.query.get(appointment.car_id) if appointment.car_id else None
+        service = Service.query.get(appointment.service_id) if appointment.service_id else None
+        license_plate = car.license_plate if car else 'N/A'
+        service_name = service.name if service else 'Servicio'
+
         subject = "Su vehículo está listo"
         body = f"""
         Estimado/a {client.name},
 
-        Le informamos que su vehículo {appointment.car.license_plate} está listo para ser retirado.
+        Le informamos que su vehículo {license_plate} está listo para ser retirado.
         
-        Servicio realizado: {appointment.service.name if appointment.service else 'Servicio'}
+        Servicio realizado: {service_name}
         Fecha de finalización: {datetime.now().strftime('%Y-%m-%d %H:%M')}
 
         Saludos cordiales,
@@ -82,14 +93,15 @@ def send_email_from_notification(notification_id):
         """
 
         # Intentar enviar el email
-        email_sent = send_email(client.email, subject, body)
-        if not email_sent:
-            return jsonify({
-                "error": "No se pudo enviar el email",
-                "details": "Error en el servicio de email"
-            }), 502
+        try:
+            sent = send_email(client.email, subject, body)
+            if not sent:
+                return jsonify({"error": "Failed to send email", "details": "Mail service returned failure"}), 502
+        except Exception as send_err:
+            print("Error sending email via send_email():", str(send_err))
+            return jsonify({"error": "Failed to send email", "details": str(send_err)}), 502
 
-        # Si el email se envió correctamente, guardar la notificación
+        # Guardar notificación de tipo email en la base
         email_notification = Notification(
             title="Correo enviado al cliente",
             message=f"Correo enviado a {client.email} sobre el trabajo completado.",
@@ -99,18 +111,20 @@ def send_email_from_notification(notification_id):
         )
         db.session.add(email_notification)
 
-        # Marcar la notificación original como leída
-        notification.read = True
-        
+        # Marcar la notificación original como leída si existe el campo
+        try:
+            if hasattr(notification, 'read'):
+                notification.read = True
+        except:
+            pass
+
         db.session.commit()
-        return jsonify({
-            "message": "Email enviado y notificación guardada",
-            "email": client.email
-        }), 200
+        return jsonify({"message": "Email sent to client and notification stored", "email": client.email}), 200
 
     except Exception as e:
         db.session.rollback()
-        print(f"Error en send_email_from_notification: {str(e)}")
+        print("Unexpected error in send_email_from_notification:", str(e))
+        print(traceback.format_exc())
         return jsonify({"error": str(e)}), 500
 
 
@@ -127,5 +141,5 @@ def get_notifications():
         return jsonify([notif.serialize() for notif in notifications]), 200
     except Exception as e:
         print("Error en get_notifications:", str(e))
-        print(traceback.format_exc())  # Imprimir stack trace completo
+        print(traceback.format_exc())
         return jsonify({"error": "Internal server error"}), 500

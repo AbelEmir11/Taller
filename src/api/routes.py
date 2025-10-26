@@ -523,9 +523,13 @@ def update_appointment(appointment_id):
         # Si el estado cambia a completed -> crear notificación interna para admin
         try:
             if status and status.lower() == "completed":
+                # Obtener datos relacionados de forma segura
+                car = Car.query.get(appointment.car_id) if appointment.car_id else None
+                license_plate = car.license_plate if car else 'N/A'
+
                 admin_notification = Notification(
                     title="Trabajo Completado",
-                    message=f"El trabajo del vehículo {appointment.car.license_plate if appointment.car else 'N/A'} ha sido completado",
+                    message=f"El trabajo del vehículo {license_plate} ha sido completado",
                     user_id=1,  # admin por defecto
                     appointment_id=appointment.id,
                     type="internal",
@@ -1044,11 +1048,15 @@ def complete_appointment(appointment_id):
 
         appointment.status = "completed"
 
+        # Obtener datos relacionados de forma segura
+        car = Car.query.get(appointment.car_id) if appointment.car_id else None
+        license_plate = car.license_plate if car else 'N/A'
+
         # Crear notificación interna para admin
         try:
             admin_notification = Notification(
                 title="Trabajo Completado",
-                message=f"El trabajo del vehículo {appointment.car.license_plate if appointment.car else 'N/A'} ha sido completado",
+                message=f"El trabajo del vehículo {license_plate} ha sido completado",
                 user_id=1,
                 appointment_id=appointment.id,
                 type="internal",
