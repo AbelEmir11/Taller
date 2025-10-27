@@ -18,13 +18,13 @@ const UserDashboard = () => {
   return (
     <div className="container py-4">
       <div className="d-flex flex-column user-dashboard">
-        <h1>User Dashboard</h1>
+        <h1>Panel de Usuario</h1>
         {!hasAccess ? (
         <div className="card p-5">
           <div className="card-body mx-auto">
-            <h2 className="card-title">You do not have access to this section</h2>
+            <h2 className="card-title">no tienes acceso a esta seccion</h2>
             <p className="card-text mt-3">
-              You must log in as a registered user to view the content of this page.
+             Debes logearte para acceder a tu panel de usuario.
             </p>
           </div>
         </div>

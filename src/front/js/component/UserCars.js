@@ -179,7 +179,7 @@ function UserCars() {
     <div className="user-cars">
       <h2 className="fw-bolder text-dark p-3">Mis vehiculos</h2>
       <button className="btn btn-primary mb-3" onClick={handleAddModalOpen}>
-        Add Car
+        Agregar Vehiculo
       </button>
       <div className="table-responsive">
         <table className="table table-striped table-bordered">

@@ -108,6 +108,13 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # avoid cache memory
     return response
+#pruebas de envio de email
+@app.route('/test_mail')
+def test_mail():
+    from api.utils import send_email
+    result = send_email("tu_correo@gmail.com", "Prueba desde Render", "Este es un correo de prueba")
+    print("Resultado envío de prueba:", result)
+    return jsonify({"sent": result})
 
 
 # this only runs if `$ python src/main.py` is executed
