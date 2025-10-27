@@ -103,7 +103,10 @@ const MechanicAppointmentList = () => {
 
   return (
     <div className="mechanic-appointments">
+      <div className="d-flex flex-column dashboard">
+      <div className="dashboard-header-section">
       <h2 className="fw-bolder text-dark py-3 text-center">Mis turnos asignados </h2>
+      </div></div>
       <div className="table-responsive">
         <table className="table table-striped table-bordered">
           <thead>

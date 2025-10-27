@@ -138,9 +138,11 @@ const MechanicDashboard = () => {
             
        
     <div className="container py-5">
-        <div className="d-flex flex-column dashboard">
-        <div className="dashboard-header-section">
-      <h1 className="text-center">Panel mecanico</h1>
+      <div className="d-flex flex-column dashboard">
+      <div className="dashboard-header-section">
+      <h1 className="text-center">Panel mecanico</h1> 
+      </div>
+      </div>
       {!hasAccess ? (
         <div className="card p-5">
           <div className="card-body mx-auto">
@@ -152,8 +154,10 @@ const MechanicDashboard = () => {
             </p>
           </div>
         </div>
+      
       ) : (
         <>
+     
           <div className="text-end">
             <button
               className="btn btn-secondary mb-3"
@@ -162,6 +166,7 @@ const MechanicDashboard = () => {
               Editar perfil
             </button>
           </div>
+          
           <MechanicAppointmentList onJobComplete={handleJobComplete} />
           {isProfileModalOpen && (
             <UserProfileModal
@@ -177,8 +182,7 @@ const MechanicDashboard = () => {
           )}
         </>
       )}
-      </div>
-      </div>
+      
     </div>
   );
 };
