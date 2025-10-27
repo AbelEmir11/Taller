@@ -51,6 +51,7 @@ const AdminDashboard = () => {
     const token = localStorage.getItem("token");
     if (!token) return;
 
+    setIsLoadingNotifications(true);
     try {
       const response = await fetch(`${apiUrl}/notifications`, {
         headers: {
@@ -65,10 +66,16 @@ const AdminDashboard = () => {
         const unread = data.filter(n => !n.read).length;
         setUnreadCount(unread);
       } else {
-        console.error("Error loading notifications:", response.status);
+        // Leer body para ver la causa (422, 401, etc.)
+        const text = await response.text();
+        console.error("Error loading notifications:", response.status, text);
+        setStatusMessage(`Error cargando notificaciones: ${response.status} ${text}`); // mensaje visible al admin
+        setTimeout(() => setStatusMessage(""), 5000);
       }
     } catch (error) {
       console.error("Error loading notifications:", error);
+      setStatusMessage("Error de red al cargar notificaciones");
+      setTimeout(() => setStatusMessage(""), 5000);
     } finally {
       setIsLoadingNotifications(false);
     }

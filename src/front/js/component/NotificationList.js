@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 
-const NotificationList = ({ notifications, onSendEmail }) => {
+const NotificationList = ({ notifications, onSendEmail, isLoading = false }) => {
   const [loading, setLoading] = useState({});
   const [error, setError] = useState({});
   const [success, setSuccess] = useState({});
-  const [isLoading, setIsLoading] = useState(true);  // Add this line
 
   const handleSendEmail = async (notificationId) => {
     setLoading(prev => ({ ...prev, [notificationId]: true }));

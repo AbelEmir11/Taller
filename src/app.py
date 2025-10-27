@@ -34,12 +34,22 @@ app.config['MAIL_DEFAULT_SENDER'] = os.getenv("MAIL_DEFAULT_SENDER", 'AutoAgenda
 
 jwt = JWTManager(app)
 
-@jwt.token_in_blocklist_loader
-def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
-    jti = jwt_payload["jti"]
-    token = TokenBlockList.query.filter_by(jti=jti).first()
+# Manejo de errores JWT para retornar JSON en lugar de HTML
+@jwt.unauthorized_loader
+def custom_unauthorized_response(err_msg):
+    return jsonify({"error": "Missing or malformed Authorization header", "details": err_msg}), 401
 
-    return token is not None
+@jwt.invalid_token_loader
+def custom_invalid_token_response(err_msg):
+    return jsonify({"error": "Invalid token", "details": err_msg}), 422
+
+@jwt.expired_token_loader
+def custom_expired_token_response(jwt_header, jwt_payload):
+    return jsonify({"error": "Token expired"}), 401
+
+@jwt.revoked_token_loader
+def custom_revoked_token_response(jwt_header, jwt_payload):
+    return jsonify({"error": "Token has been revoked"}), 401
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
