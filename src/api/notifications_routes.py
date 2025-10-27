@@ -120,31 +120,17 @@ El equipo de AutoAgenda
 
         # Intentar enviar el email
         print(f"📧 Intentando enviar email a {client.email}...")
-        try:
-            sent = send_email(client.email, subject, body)
-            if not sent:
-                return jsonify({
-                    "error": "Failed to send email",
-                    "details": "El servicio de correo retornó un error. Verifica la configuración SMTP."
-                }), 502
-        except Exception as send_err:
-            print(f"❌ Error enviando email: {str(send_err)}")
-            print(traceback.format_exc())
-            return jsonify({
-                "error": "Failed to send email",
-                "details": str(send_err)
-            }), 502
+        # Ahora send_email lanzará excepción con detalle si falla
+        send_email(client.email, subject, body)
 
-        # Marcar la notificación como leída
+        # Marcar la notificación como leída y guardar confirmación
         notification.read = True
-        
-        # Crear una notificación de confirmación
         email_confirmation = Notification(
             title="📧 Email enviado",
             message=f"Correo enviado exitosamente a {client.email} ({client.name}) sobre el vehículo {license_plate}.",
             user_id=16,
             appointment_id=appointment.id,
-            read=True  # Ya fue procesada
+            read=True
         )
         db.session.add(email_confirmation)
         db.session.commit()
@@ -160,7 +146,8 @@ El equipo de AutoAgenda
         db.session.rollback()
         print("❌ Error inesperado en send_email_from_notification:", str(e))
         print(traceback.format_exc())
-        return jsonify({"error": str(e)}), 500
+        # Devolver detalle (el mensaje viene de send_email al lanzar)
+        return jsonify({"error": str(e)}), 502
 
 
 # Exponer GET /api/notifications para que el frontend admin lo consuma correctamente

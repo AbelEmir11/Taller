@@ -1,8 +1,12 @@
+import traceback
 from flask import jsonify, url_for, current_app
 import os
 import smtplib
 from flask_mail import Message
 from flask import current_app
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import ssl
 
 class APIException(Exception):
     status_code = 400
@@ -46,22 +50,63 @@ def generate_sitemap(app):
 
 def send_email(to_email, subject, body):
     try:
-        # Obtener la instancia de Mail inicializada en la aplicación
+        # Intentar usar la extensión Flask-Mail si está inicializada
         mail_ext = current_app.extensions.get('mail')
-        if not mail_ext:
-            print("❌ Mail extension not initialized")
-            return False
+        if mail_ext:
+            try:
+                msg = Message(
+                    subject=subject,
+                    recipients=[to_email],
+                    body=body,
+                    sender=current_app.config.get('MAIL_DEFAULT_SENDER')
+                )
+                mail_ext.send(msg)
+                print(f"✅ Email enviado correctamente a {to_email} via Flask-Mail")
+                return True
+            except Exception as e:
+                # Si falla Flask-Mail, mostrar detalle y luego intentar fallback SMTP
+                print("❌ Flask-Mail error:", str(e))
+                print(traceback.format_exc())
+                # No retornar False: intentar fallback
+        else:
+            print("ℹ️ Flask-Mail no inicializado, intentando fallback SMTP")
 
-        msg = Message(
-            subject=subject,
-            recipients=[to_email],
-            body=body,
-            sender=current_app.config.get('MAIL_DEFAULT_SENDER')
-        )
-        mail_ext.send(msg)
-        print(f"✅ Email enviado correctamente a {to_email}")
+        # Fallback a smtplib con configuración desde app.config / environment
+        smtp_server = current_app.config.get('MAIL_SERVER') or os.getenv('MAIL_SERVER')
+        smtp_port = int(current_app.config.get('MAIL_PORT') or os.getenv('MAIL_PORT', 587))
+        username = current_app.config.get('MAIL_USERNAME') or os.getenv('MAIL_USERNAME')
+        password = current_app.config.get('MAIL_PASSWORD') or os.getenv('MAIL_PASSWORD')
+        use_tls = current_app.config.get('MAIL_USE_TLS', True)
+        sender = current_app.config.get('MAIL_DEFAULT_SENDER') or os.getenv('MAIL_DEFAULT_SENDER')
+
+        if not smtp_server or not username or not password:
+            raise Exception("SMTP configuration incomplete (MAIL_SERVER/MAIL_USERNAME/MAIL_PASSWORD)")
+
+        context = ssl.create_default_context()
+        if use_tls:
+            server = smtplib.SMTP(smtp_server, smtp_port, timeout=15)
+            server.ehlo()
+            server.starttls(context=context)
+        else:
+            server = smtplib.SMTP_SSL(smtp_server, smtp_port, context=context, timeout=15)
+
+        server.login(username, password)
+
+        msg = MIMEMultipart()
+        msg['From'] = sender
+        msg['To'] = to_email
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body, 'plain', 'utf-8'))
+
+        server.sendmail(sender, [to_email], msg.as_string())
+        server.quit()
+        print(f"✅ Email enviado correctamente a {to_email} via smtplib ({smtp_server}:{smtp_port})")
         return True
+
     except Exception as e:
-        # Loguear error completo en servidor para facilitar debugging (Brevo/API keys)
-        print(f"❌ Error al enviar el email: {str(e)}")
-        return False
+        # Devolver información detallada para logs y para que el endpoint la incluya en la respuesta
+        err_msg = f"Error sending email: {str(e)}"
+        print("❌", err_msg)
+        print(traceback.format_exc())
+        # Lanzar excepción para que el controlador la capture y devuelva 502 con detalles
+        raise Exception(err_msg)
