@@ -7,7 +7,8 @@ import traceback
 
 notifications_bp = Blueprint('notifications', __name__)
 
-
+# Compatibilidad: exponer ruta con y sin el prefijo "notifications" para el notify
+@notifications_bp.route('/notifications/notify_appointment_complete/<int:appointment_id>', methods=['POST'])
 @notifications_bp.route('/notify_appointment_complete/<int:appointment_id>', methods=['POST'])
 @jwt_required()
 def notify_appointment_complete(appointment_id):
@@ -58,7 +59,9 @@ def notify_appointment_complete(appointment_id):
         return jsonify({"error": str(e)}), 500
 
 
-@notifications_bp.route('/<int:notification_id>/send_email', methods=['POST'])
+# Exponer POST /api/notifications/<id>/send_email (frontend lo llama así)
+@notifications_bp.route('/notifications/<int:notification_id>/send_email', methods=['POST'])
+@notifications_bp.route('/<int:notification_id>/send_email', methods=['POST'])  # alias antiguo
 @jwt_required()
 def send_email_from_notification(notification_id):
     """
@@ -160,7 +163,9 @@ El equipo de AutoAgenda
         return jsonify({"error": str(e)}), 500
 
 
-@notifications_bp.route('', methods=['GET'])
+# Exponer GET /api/notifications para que el frontend admin lo consuma correctamente
+@notifications_bp.route('/notifications', methods=['GET'])
+@notifications_bp.route('', methods=['GET'])  # alias: raiz del blueprint también responde
 @jwt_required()
 def get_notifications():
     """
@@ -185,7 +190,9 @@ def get_notifications():
         return jsonify({"error": "Internal server error"}), 500
 
 
-@notifications_bp.route('/<int:notification_id>/mark_read', methods=['PATCH'])
+# Marcar notificación como leída
+@notifications_bp.route('/notifications/<int:notification_id>/mark_read', methods=['PATCH'])
+@notifications_bp.route('/<int:notification_id>/mark_read', methods=['PATCH'])  # alias antiguo
 @jwt_required()
 def mark_notification_read(notification_id):
     """
