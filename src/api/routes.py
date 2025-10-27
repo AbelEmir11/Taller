@@ -9,7 +9,7 @@ from flask_cors import CORS
 from datetime import datetime, timedelta, timezone
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
-
+import traceback
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -402,7 +402,7 @@ def get_services():
     return jsonify(services_list), 200
 
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// post a /settings 
+# //// post a /settings 
 @api.route('/settings', methods=['POST'])
 @jwt_required()
 def create_setting():
@@ -423,7 +423,7 @@ def create_setting():
     return jsonify(response_body), 201
 
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// get a /settings 
+# / get a /settings 
 @api.route('/settings', methods=['GET'])
 # @jwt_required()
 def get_setting():
@@ -434,7 +434,7 @@ def get_setting():
     else:
         return jsonify({"msg": "Settings not configured"}), 404
     
-# ///////////////////////////////////////////////////////////////////////////////////////////// get a /users 
+# // get a /users 
 @api.route('/users', methods=['GET'])
 @jwt_required()
 def get_users():
@@ -442,7 +442,7 @@ def get_users():
     users_list = list(map(lambda user: user.serialize(), users_query))
     return jsonify(users_list), 200
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// post a /appointments 
+# ///// post a /appointments 
 @api.route('/appointments', methods=['POST'])
 @jwt_required()
 def create_appointment():
@@ -506,48 +506,76 @@ def create_appointment():
     else:
         return jsonify({"error": "No available slots for this time"}), 400
 
-# /// PATCH a /appointments con id
+# /// PATCH a /appointments con id - VERSIÓN CORREGIDA
 @api.route('/appointments/<int:appointment_id>', methods=['PATCH'])
 @jwt_required()
 def update_appointment(appointment_id):
-    appointment = Appointment.query.get(appointment_id)
-    if not appointment:
-        return jsonify({"error": "Appointment not found"}), 404
+    try:
+        appointment = Appointment.query.get(appointment_id)
+        if not appointment:
+            return jsonify({"error": "Appointment not found"}), 404
 
-    data = request.get_json()
-    if not data:
-        return jsonify({"error": "No JSON body provided"}), 400
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "No JSON body provided"}), 400
 
-    status = data.get('status')
-    created_notification = False
-    if status:
-        appointment.status = status
+        status = data.get('status')
+        created_notification = False
+        
+        if status:
+            appointment.status = status
 
-        # Si el estado cambia a completed -> crear notificación interna para admin
-        try:
+            # Si el estado cambia a completed -> crear notificación interna para admin
             if status and status.lower() == "completed":
-                # Obtener datos relacionados de forma segura
-                car = Car.query.get(appointment.car_id) if appointment.car_id else None
-                license_plate = car.license_plate if car else 'N/A'
+                try:
+                    # Verificar si ya existe una notificación para este appointment
+                    existing_notification = Notification.query.filter_by(
+                        appointment_id=appointment_id
+                    ).first()
+                    
+                    if not existing_notification:
+                        # Obtener datos relacionados de forma segura
+                        car = Car.query.get(appointment.car_id) if appointment.car_id else None
+                        service = Service.query.get(appointment.service_id) if appointment.service_id else None
+                        license_plate = car.license_plate if car else 'N/A'
+                        service_name = service.name if service else 'Servicio'
 
-                admin_notification = Notification(
-                    title="Trabajo Completado",
-                    message=f"El trabajo del vehículo {license_plate} ha sido completado",
-                    user_id=1,  # admin por defecto
-                    appointment_id=appointment.id,
-                    read=False
-                )
-                db.session.add(admin_notification)
-                created_notification = True
-        except Exception as notif_err:
-            # no bloquear la actualización por un fallo en la notificación
-            print("Error creando notificación al actualizar cita:", str(notif_err))
+                        admin_notification = Notification(
+                            title="🔧 Trabajo Completado",
+                            message=f"El trabajo del vehículo {license_plate} ({service_name}) ha sido completado y está listo para ser retirado.",
+                            user_id=1,  # admin por defecto
+                            appointment_id=appointment.id,
+                            read=False
+                        )
+                        db.session.add(admin_notification)
+                        created_notification = True
+                        print(f"✅ Notificación creada para appointment {appointment_id}")
+                    else:
+                        print(f"⚠️ Ya existe notificación para appointment {appointment_id}")
+                        
+                except Exception as notif_err:
+                    # No bloquear la actualización por un fallo en la notificación
+                    print(f"❌ Error creando notificación al actualizar cita: {str(notif_err)}")
+                    import traceback
+                    print(traceback.format_exc())
 
-    db.session.commit()
-    resp = {"msg": "Appointment updated successfully"}
-    if created_notification:
-        resp["notification"] = "created"
-    return jsonify(resp), 200
+        db.session.commit()
+        
+        resp = {
+            "msg": "Appointment updated successfully",
+            "appointment": appointment.serialize()
+        }
+        if created_notification:
+            resp["notification"] = "created"
+            
+        return jsonify(resp), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        print(f"❌ ERROR en update_appointment: {str(e)}")
+        import traceback
+        print(traceback.format_exc())
+        return jsonify({"error": str(e)}), 500
 
 # ////// get a /appointments con id
 @api.route('/appointments/<int:appointment_id>', methods=['GET'])
