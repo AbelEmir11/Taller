@@ -138,6 +138,8 @@ const MechanicDashboard = () => {
             
        
     <div className="container py-5">
+        <div className="d-flex flex-column dashboard">
+        <div className="dashboard-header-section">
       <h1 className="text-center">Panel mecanico</h1>
       {!hasAccess ? (
         <div className="card p-5">
@@ -175,6 +177,8 @@ const MechanicDashboard = () => {
           )}
         </>
       )}
+      </div>
+      </div>
     </div>
   );
 };
