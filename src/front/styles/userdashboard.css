@@ -3,12 +3,14 @@ body {
   background-color: #003366;
 }
 
+
 .user-dashboard {
   text-align: center;
 }
 
 .user-profile, .user-appointments, .user-cars {
   margin: 20px 0;
+  color: bisque;
 }
 
 .table-responsive {
