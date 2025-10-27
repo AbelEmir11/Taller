@@ -543,7 +543,7 @@ def update_appointment(appointment_id):
                         admin_notification = Notification(
                             title="🔧 Trabajo Completado",
                             message=f"El trabajo del vehículo {license_plate} ({service_name}) ha sido completado y está listo para ser retirado.",
-                            user_id=1,  # admin por defecto
+                            user_id=16,  # admin por defecto
                             appointment_id=appointment.id,
                             read=False
                         )
@@ -594,7 +594,7 @@ def get_appointment(appointment_id):
         }
         return jsonify(response_body), 404
 
-# ///////////////////////////////////////////////////////////////////////////////////////////// delete a /appointments con id
+#/// delete a /appointments con id
 @api.route('/appointments/<int:appointment_id>', methods=['DELETE'])
 @jwt_required()
 def cancel_appointment(appointment_id):

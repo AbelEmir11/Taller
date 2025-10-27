@@ -38,7 +38,7 @@ def notify_appointment_complete(appointment_id):
         admin_notification = Notification(
             title="🔧 Trabajo Completado",
             message=f"El trabajo del vehículo {license_plate} ({service_name}) ha sido completado y está listo para ser retirado.",
-            user_id=1,  # Admin
+            user_id=16,  # Admin
             appointment_id=appointment_id,
             read=False
         )
@@ -139,7 +139,7 @@ El equipo de AutoAgenda
         email_confirmation = Notification(
             title="📧 Email enviado",
             message=f"Correo enviado exitosamente a {client.email} ({client.name}) sobre el vehículo {license_plate}.",
-            user_id=1,
+            user_id=16,
             appointment_id=appointment.id,
             read=True  # Ya fue procesada
         )
