@@ -210,7 +210,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      //////////////////////////////////////////////////////////////////////////////////////////////////////// manejo envio mails
+      /// manejo envio mails
       SendMail: async (data) => {
         try {
           const response = await fetch("https://api.brevo.com/v3/smtp/email", {
@@ -229,7 +229,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.error("Error:", error);
         }
       },
-      //////////////////////////////////////////////////////////////////////////////////////////////////////// manejo envio SMS
+     /// manejo envio SMS
       SMSSender: async (SMSInfo) => {
         try {
           const response = await fetch("https://api.brevo.com/v3/transactionalSMS/sms", {
