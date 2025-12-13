@@ -4,9 +4,16 @@ Implementación profesional para envío de correos del taller mecánico
 """
 
 import os
-import resend
 from flask import current_app
 import traceback
+
+# Importar resend solo si está disponible
+try:
+    import resend
+    RESEND_AVAILABLE = True
+except ImportError:
+    RESEND_AVAILABLE = False
+    print("⚠️ Warning: resend module not installed. Email functionality will be limited.")
 
 
 def send_email_resend(to_email, subject, body=None, html=None):
@@ -26,6 +33,10 @@ def send_email_resend(to_email, subject, body=None, html=None):
         Exception: Si falla el envío del email
     """
     try:
+        # Verificar que resend esté disponible
+        if not RESEND_AVAILABLE:
+            raise Exception("Resend module is not installed. Please run: pip install resend")
+        
         # Obtener API key del entorno
         api_key = os.getenv('RESEND_API_KEY')
         if not api_key:
