@@ -256,3 +256,39 @@ class EmailNotification(db.Model):
             'created_at': self.created_at,
             'sent_at': self.sent_at
         }
+
+class SuccessStory(db.Model):
+    """
+    Modelo para casos de éxito del taller
+    Muestra reparaciones exitosas con imágenes antes/después
+    """
+    __tablename__ = 'success_stories'
+    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    service_type = db.Column(db.String(100), nullable=False)  # Ej: "Reparación de motor", "Pintura", etc.
+    vehicle_model = db.Column(db.String(100), nullable=False)
+    before_image_url = db.Column(db.String(500), nullable=True)  # URL de imagen antes
+    after_image_url = db.Column(db.String(500), nullable=True)   # URL de imagen después
+    client_testimonial = db.Column(db.Text, nullable=True)
+    is_featured = db.Column(db.Boolean, default=False)  # Para destacar algunos casos
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    created_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    
+    creator = db.relationship('User', backref='created_success_stories')
+    
+    def serialize(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'service_type': self.service_type,
+            'vehicle_model': self.vehicle_model,
+            'before_image_url': self.before_image_url,
+            'after_image_url': self.after_image_url,
+            'client_testimonial': self.client_testimonial,
+            'is_featured': self.is_featured,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'created_by': self.created_by
+        }

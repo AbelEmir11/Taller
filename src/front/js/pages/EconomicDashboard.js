@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import "../../styles/economicdashboard.css";
 import { Context } from "../store/appContext";
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 
 const EconomicDashboard = () => {
   const { store, actions } = useContext(Context);
@@ -14,15 +15,15 @@ const EconomicDashboard = () => {
   const [showAddExpense, setShowAddExpense] = useState(false);
   const [showAddGoal, setShowAddGoal] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
-  
+
   const apiUrl = process.env.BACKEND_URL + "/api";
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const roleId = localStorage.getItem("role_id");
-    
+
     setHasAccess(!!token && roleId === "1");
-    
+
     if (token && roleId === "1") {
       loadFinancialData();
     } else {
@@ -33,7 +34,7 @@ const EconomicDashboard = () => {
   const loadFinancialData = async () => {
     try {
       const token = localStorage.getItem("token");
-      
+
       // Cargar resumen financiero
       const summaryResponse = await fetch(`${apiUrl}/financial-summary`, {
         headers: {
@@ -41,7 +42,7 @@ const EconomicDashboard = () => {
           ...store.corsEnabled
         },
       });
-      
+
       if (summaryResponse.ok) {
         const summaryData = await summaryResponse.json();
         setFinancialSummary(summaryData);
@@ -51,14 +52,14 @@ const EconomicDashboard = () => {
       const now = new Date();
       const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
       const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-      
+
       const incomesResponse = await fetch(`${apiUrl}/incomes?start_date=${startOfMonth.toISOString().split('T')[0]}&end_date=${endOfMonth.toISOString().split('T')[0]}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           ...store.corsEnabled
         },
       });
-      
+
       if (incomesResponse.ok) {
         const incomesData = await incomesResponse.json();
         setIncomes(incomesData);
@@ -71,7 +72,7 @@ const EconomicDashboard = () => {
           ...store.corsEnabled
         },
       });
-      
+
       if (expensesResponse.ok) {
         const expensesData = await expensesResponse.json();
         setExpenses(expensesData);
@@ -84,7 +85,7 @@ const EconomicDashboard = () => {
           ...store.corsEnabled
         },
       });
-      
+
       if (goalsResponse.ok) {
         const goalsData = await goalsResponse.json();
         setGoals(goalsData);
@@ -236,20 +237,20 @@ const EconomicDashboard = () => {
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h1>Dashboard Económico</h1>
           <div>
-            <button 
-              className="btn btn-success me-2" 
+            <button
+              className="btn btn-success me-2"
               onClick={() => setShowAddIncome(true)}
             >
               + Ingreso
             </button>
-            <button 
-              className="btn btn-danger me-2" 
+            <button
+              className="btn btn-danger me-2"
               onClick={() => setShowAddExpense(true)}
             >
               + Egreso
             </button>
-            <button 
-              className="btn btn-primary" 
+            <button
+              className="btn btn-primary"
               onClick={() => setShowAddGoal(true)}
             >
               + Meta
@@ -263,74 +264,122 @@ const EconomicDashboard = () => {
           </div>
         )}
 
-        {/* Resumen Financiero */}
+        {/* Resumen Financiero Mejorado */}
         {financialSummary && (
-          <div className="row mb-4">
+          <div className="row mb-4 g-3">
             <div className="col-md-4">
-              <div className="card text-center">
-                <div className="card-body">
-                  <h5 className="card-title text-success">Ingresos del Mes</h5>
-                  <h3 className="text-success">{formatCurrency(financialSummary.monthly_income)}</h3>
+              <div className="financial-card income-card">
+                <div className="card-icon">
+                  <i className="fas fa-arrow-up"></i>
+                </div>
+                <div className="card-content">
+                  <h5 className="card-label">Ingresos del Mes</h5>
+                  <h3 className="card-amount income-amount">{formatCurrency(financialSummary.monthly_income)}</h3>
                 </div>
               </div>
             </div>
             <div className="col-md-4">
-              <div className="card text-center">
-                <div className="card-body">
-                  <h5 className="card-title text-danger">Egresos del Mes</h5>
-                  <h3 className="text-danger">{formatCurrency(financialSummary.monthly_expense)}</h3>
+              <div className="financial-card expense-card">
+                <div className="card-icon">
+                  <i className="fas fa-arrow-down"></i>
+                </div>
+                <div className="card-content">
+                  <h5 className="card-label">Egresos del Mes</h5>
+                  <h3 className="card-amount expense-amount">{formatCurrency(financialSummary.monthly_expense)}</h3>
                 </div>
               </div>
             </div>
             <div className="col-md-4">
-              <div className="card text-center">
-                <div className="card-body">
-                  <h5 className="card-title">Balance del Mes</h5>
-                  <h3 className={financialSummary.monthly_balance >= 0 ? 'text-success' : 'text-danger'}>
+              <div className={`financial-card balance-card ${financialSummary.monthly_balance >= 0 ? 'positive' : 'negative'}`}>
+                <div className="card-icon">
+                  <i className="fas fa-wallet"></i>
+                </div>
+                <div className="card-content">
+                  <h5 className="card-label">Balance del Mes</h5>
+                  <h3 className="card-amount balance-amount">
                     {formatCurrency(financialSummary.monthly_balance)}
                   </h3>
+                  {financialSummary.monthly_balance > 0 && goals.length > 0 && (
+                    <p className="excedent-info">
+                      💡 Excedente disponible para meta
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* Metas Financieras */}
+        {/* Metas Financieras con Visualización Circular */}
         {goals.length > 0 && (
           <div className="row mb-4">
             <div className="col-12">
-              <h3>Metas Financieras</h3>
-              <div className="row">
-                {goals.map((goal) => (
-                  <div key={goal.id} className="col-md-6 mb-3">
-                    <div className="card">
-                      <div className="card-body">
-                        <h5 className="card-title">{goal.title}</h5>
-                        <p className="card-text">{goal.description}</p>
-                        <div className="progress mb-2">
-                          <div 
-                            className="progress-bar" 
-                            role="progressbar" 
-                            style={{width: `${Math.min(goal.progress_percentage, 100)}%`}}
-                            aria-valuenow={goal.progress_percentage}
-                            aria-valuemin="0" 
-                            aria-valuemax="100"
-                          >
-                            {goal.progress_percentage.toFixed(1)}%
+              <h3 className="section-title mb-4">🎯 Metas Financieras</h3>
+              <div className="row g-3">
+                {goals.map((goal, index) => {
+                  const percentage = goal.progress_percentage;
+                  const data = [
+                    { name: 'Completado', value: Math.min(percentage, 100) },
+                    { name: 'Pendiente', value: Math.max(100 - percentage, 0) }
+                  ];
+                  const COLORS = [
+                    percentage >= 75 ? '#10b981' : percentage >= 50 ? '#f59e0b' : '#ef4444',
+                    '#e5e7eb'
+                  ];
+
+                  return (
+                    <div key={goal.id} className="col-md-6 mb-3">
+                      <div className="goal-card">
+                        {index === 0 && financialSummary?.monthly_balance > 0 && (
+                          <div className="priority-badge">🥇 Meta Prioritaria</div>
+                        )}
+                        <div className="goal-visualization">
+                          <ResponsiveContainer width="100%" height={200}>
+                            <PieChart>
+                              <Pie
+                                data={data}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={60}
+                                outerRadius={80}
+                                paddingAngle={2}
+                                dataKey="value"
+                              >
+                                {data.map((entry, index) => (
+                                  <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                                ))}
+                              </Pie>
+                            </PieChart>
+                          </ResponsiveContainer>
+                          <div className="goal-percentage-overlay">
+                            <span className="percentage-number">{percentage.toFixed(1)}%</span>
                           </div>
                         </div>
-                        <div className="d-flex justify-content-between">
-                          <small className="text-muted">
-                            {formatCurrency(goal.current_amount)} / {formatCurrency(goal.target_amount)}
-                          </small>
-                          <small className="text-muted">
-                            {goal.target_date ? `Meta: ${formatDate(goal.target_date)}` : 'Sin fecha límite'}
-                          </small>
+                        <div className="goal-content">
+                          <h5 className="goal-title">{goal.title}</h5>
+                          <p className="goal-description">{goal.description}</p>
+                          <div className="goal-amounts">
+                            <div className="amount-item">
+                              <span className="amount-label">Actual:</span>
+                              <span className="amount-value current">{formatCurrency(goal.current_amount)}</span>
+                            </div>
+                            <div className="amount-divider">/</div>
+                            <div className="amount-item">
+                              <span className="amount-label">Meta:</span>
+                              <span className="amount-value target">{formatCurrency(goal.target_amount)}</span>
+                            </div>
+                          </div>
+                          {goal.target_date && (
+                            <div className="goal-deadline">
+                              <i className="fas fa-calendar"></i>
+                              <span>Fecha objetivo: {formatDate(goal.target_date)}</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -394,21 +443,21 @@ const EconomicDashboard = () => {
 
         {/* Modales para agregar datos */}
         {showAddIncome && (
-          <AddIncomeModal 
+          <AddIncomeModal
             onClose={() => setShowAddIncome(false)}
             onSave={handleAddIncome}
           />
         )}
 
         {showAddExpense && (
-          <AddExpenseModal 
+          <AddExpenseModal
             onClose={() => setShowAddExpense(false)}
             onSave={handleAddExpense}
           />
         )}
 
         {showAddGoal && (
-          <AddGoalModal 
+          <AddGoalModal
             onClose={() => setShowAddGoal(false)}
             onSave={handleAddGoal}
           />
@@ -436,7 +485,7 @@ const AddIncomeModal = ({ onClose, onSave }) => {
   };
 
   return (
-    <div className="modal show d-block" style={{backgroundColor: 'rgba(0,0,0,0.5)'}}>
+    <div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
@@ -447,49 +496,49 @@ const AddIncomeModal = ({ onClose, onSave }) => {
             <div className="modal-body">
               <div className="mb-3">
                 <label className="form-label">Monto *</label>
-                <input 
-                  type="number" 
-                  className="form-control" 
+                <input
+                  type="number"
+                  className="form-control"
                   value={formData.amount}
-                  onChange={(e) => setFormData({...formData, amount: parseFloat(e.target.value)})}
-                  required 
+                  onChange={(e) => setFormData({ ...formData, amount: parseFloat(e.target.value) })}
+                  required
                 />
               </div>
               <div className="mb-3">
                 <label className="form-label">Descripción *</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
+                <input
+                  type="text"
+                  className="form-control"
                   value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
-                  required 
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  required
                 />
               </div>
               <div className="mb-3">
                 <label className="form-label">Cliente</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
+                <input
+                  type="text"
+                  className="form-control"
                   value={formData.client_name}
-                  onChange={(e) => setFormData({...formData, client_name: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
                 />
               </div>
               <div className="mb-3">
                 <label className="form-label">Patente del Vehículo</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
+                <input
+                  type="text"
+                  className="form-control"
                   value={formData.car_license_plate}
-                  onChange={(e) => setFormData({...formData, car_license_plate: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, car_license_plate: e.target.value })}
                 />
               </div>
               <div className="mb-3">
                 <label className="form-label">Fecha</label>
-                <input 
-                  type="date" 
-                  className="form-control" 
+                <input
+                  type="date"
+                  className="form-control"
                   value={formData.date}
-                  onChange={(e) => setFormData({...formData, date: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                 />
               </div>
             </div>
@@ -514,7 +563,7 @@ const AddExpenseModal = ({ onClose, onSave }) => {
   });
 
   const categories = [
-    'Impuestos', 'Alquiler', 'Luz', 'Gas', 'Sueldo', 'Repuestos', 
+    'Impuestos', 'Alquiler', 'Luz', 'Gas', 'Sueldo', 'Repuestos',
     'Herramientas', 'Mantenimiento', 'Otros'
   ];
 
@@ -526,7 +575,7 @@ const AddExpenseModal = ({ onClose, onSave }) => {
   };
 
   return (
-    <div className="modal show d-block" style={{backgroundColor: 'rgba(0,0,0,0.5)'}}>
+    <div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
@@ -537,30 +586,30 @@ const AddExpenseModal = ({ onClose, onSave }) => {
             <div className="modal-body">
               <div className="mb-3">
                 <label className="form-label">Monto *</label>
-                <input 
-                  type="number" 
-                  className="form-control" 
+                <input
+                  type="number"
+                  className="form-control"
                   value={formData.amount}
-                  onChange={(e) => setFormData({...formData, amount: parseFloat(e.target.value)})}
-                  required 
+                  onChange={(e) => setFormData({ ...formData, amount: parseFloat(e.target.value) })}
+                  required
                 />
               </div>
               <div className="mb-3">
                 <label className="form-label">Descripción *</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
+                <input
+                  type="text"
+                  className="form-control"
                   value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
-                  required 
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  required
                 />
               </div>
               <div className="mb-3">
                 <label className="form-label">Categoría *</label>
-                <select 
-                  className="form-control" 
+                <select
+                  className="form-control"
                   value={formData.category}
-                  onChange={(e) => setFormData({...formData, category: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                   required
                 >
                   <option value="">Seleccionar categoría</option>
@@ -571,11 +620,11 @@ const AddExpenseModal = ({ onClose, onSave }) => {
               </div>
               <div className="mb-3">
                 <label className="form-label">Fecha</label>
-                <input 
-                  type="date" 
-                  className="form-control" 
+                <input
+                  type="date"
+                  className="form-control"
                   value={formData.date}
-                  onChange={(e) => setFormData({...formData, date: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                 />
               </div>
             </div>
@@ -607,7 +656,7 @@ const AddGoalModal = ({ onClose, onSave }) => {
   };
 
   return (
-    <div className="modal show d-block" style={{backgroundColor: 'rgba(0,0,0,0.5)'}}>
+    <div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
@@ -618,40 +667,40 @@ const AddGoalModal = ({ onClose, onSave }) => {
             <div className="modal-body">
               <div className="mb-3">
                 <label className="form-label">Título *</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
+                <input
+                  type="text"
+                  className="form-control"
                   value={formData.title}
-                  onChange={(e) => setFormData({...formData, title: e.target.value})}
-                  required 
+                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  required
                 />
               </div>
               <div className="mb-3">
                 <label className="form-label">Descripción</label>
-                <textarea 
-                  className="form-control" 
+                <textarea
+                  className="form-control"
                   value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows="3"
                 />
               </div>
               <div className="mb-3">
                 <label className="form-label">Monto Objetivo *</label>
-                <input 
-                  type="number" 
-                  className="form-control" 
+                <input
+                  type="number"
+                  className="form-control"
                   value={formData.target_amount}
-                  onChange={(e) => setFormData({...formData, target_amount: parseFloat(e.target.value)})}
-                  required 
+                  onChange={(e) => setFormData({ ...formData, target_amount: parseFloat(e.target.value) })}
+                  required
                 />
               </div>
               <div className="mb-3">
                 <label className="form-label">Fecha Objetivo</label>
-                <input 
-                  type="date" 
-                  className="form-control" 
+                <input
+                  type="date"
+                  className="form-control"
                   value={formData.target_date}
-                  onChange={(e) => setFormData({...formData, target_date: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, target_date: e.target.value })}
                 />
               </div>
             </div>

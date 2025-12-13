@@ -14,6 +14,7 @@ from datetime import timedelta
 from api.commands import setup_commands # Nuevo comando para importación
 from flask_mail import Mail, Message
 from api.notifications_routes import notifications_bp
+from api.success_stories_routes import success_stories_bp  # Rutas de casos de éxito
 
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -84,6 +85,9 @@ mail.init_app(app)
 
 # Registrar blueprint de notificaciones (queda bajo /api/...)
 app.register_blueprint(notifications_bp, url_prefix="/api")
+
+# Registrar blueprint de casos de éxito (queda bajo /api/...)
+app.register_blueprint(success_stories_bp, url_prefix="/api")
 
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):

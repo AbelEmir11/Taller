@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt
 from api.models import db, Notification, User, Appointment, Car, Service
 from datetime import datetime
-from api.utils import send_email
+from api.email_service import send_vehicle_ready_email  # Nuevo servicio de Resend
 import traceback
 
 notifications_bp = Blueprint('notifications', __name__)
@@ -93,35 +93,23 @@ def send_email_from_notification(notification_id):
         # Obtener datos del vehículo y servicio
         car = Car.query.get(appointment.car_id) if appointment.car_id else None
         service = Service.query.get(appointment.service_id) if appointment.service_id else None
-        license_plate = car.license_plate if car else 'N/A'
+        # Preparar datos del email
         car_model = car.car_model if car else 'Vehículo'
-        service_name = service.name if service else 'Servicio'
-
-        # Preparar el email
-        subject = "✅ Su vehículo está listo para ser retirado"
-        body = f"""
-Estimado/a {client.name},
-
-Le informamos que su vehículo ya está listo para ser retirado.
-
-📋 Detalles del servicio:
-   • Vehículo: {car_model}
-   • Patente: {license_plate}
-   • Servicio realizado: {service_name}
-   • Fecha de finalización: {datetime.now().strftime('%d/%m/%Y %H:%M')}
-
-Puede pasar a retirarlo en nuestro horario de atención.
-
-¡Gracias por confiar en nosotros!
-
-Saludos cordiales,
-El equipo de AutoAgenda
-        """
-
-        # Intentar enviar el email
+        
+        # Intentar enviar el email usando Resend
         print(f"📧 Intentando enviar email a {client.email}...")
-        # Ahora send_email lanzará excepción con detalle si falla
-        send_email(client.email, subject, body)
+        try:
+            send_vehicle_ready_email(
+                client_email=client.email,
+                client_name=client.name,
+                car_model=car_model,
+                license_plate=license_plate,
+                service_name=service_name
+            )
+        except Exception as email_error:
+            # Si falla el envío, registrar el error y retornar
+            print(f"❌ Error al enviar email: {str(email_error)}")
+            return jsonify({"error": f"Error al enviar email: {str(email_error)}"}), 502
 
         # Marcar la notificación como leída y guardar confirmación
         notification.read = True

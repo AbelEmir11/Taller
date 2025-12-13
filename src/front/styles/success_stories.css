@@ -1,0 +1,241 @@
+/* Estilos para la sección de Casos de Éxito */
+
+.success-stories-section {
+  background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: #6c757d;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Tarjeta de caso de éxito */
+.success-story-card {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.success-story-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.2);
+}
+
+/* Badge de tipo de servicio */
+.story-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+/* Contenedor de imágenes antes/después */
+.before-after-container {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  gap: 10px;
+  min-height: 200px;
+}
+
+.image-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+.image-label {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  z-index: 1;
+}
+
+/* Imágenes placeholder estilizadas */
+.placeholder-image {
+  width: 100%;
+  height: 160px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: #6c757d;
+  text-align: center;
+  padding: 15px;
+}
+
+.before-img {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  border: 3px solid #e67e22;
+}
+
+.before-img span {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+
+.after-img {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  border: 3px solid #27ae60;
+}
+
+.after-img span {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+
+.placeholder-image p {
+  margin: 0;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Flecha divisora */
+.divider-arrow {
+  font-size: 1.8rem;
+  color: #667eea;
+  font-weight: bold;
+  flex-shrink: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* Contenido de la historia */
+.story-content {
+  padding: 25px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.story-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 10px;
+}
+
+.story-vehicle {
+  color: #667eea;
+  font-weight: 600;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+
+.story-vehicle i {
+  margin-right: 6px;
+}
+
+.story-description {
+  color: #4a5568;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  flex-grow: 1;
+}
+
+/* Testimonio del cliente */
+.testimonial {
+  background: linear-gradient(135deg, #f6f8fb 0%, #e9ecef 100%);
+  border-left: 4px solid #667eea;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: auto;
+}
+
+.testimonial i {
+  color: #667eea;
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
+.testimonial p {
+  margin: 8px 0 0 0;
+  font-style: italic;
+  color: #4a5568;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* CTA Section */
+.cta-text {
+  font-size: 1.2rem;
+  color: #2d3748;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .before-after-container {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .divider-arrow {
+    transform: rotate(90deg);
+  }
+
+  .placeholder-image {
+    height: 140px;
+  }
+}
+
+/* Animaciones AOS */
+[data-aos="fade-up"] {
+  opacity: 0;
+  transition-property: transform, opacity;
+}
+
+[data-aos="fade-up"].aos-animate {
+  opacity: 1;
+  transform: translateY(0);
+}

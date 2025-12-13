@@ -1,359 +1,370 @@
-/* Estilos para el Dashboard Económico */
+/* Estilos Mejorados para el Dashboard Económico */
 
 .economic-dashboard {
-  min-height: 100vh;
+  padding: 20px 0;
 }
 
-/* Cards de resumen financiero */
-.card {
-  border: none;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease-in-out;
-}
+/* ==================== TARJETAS FINANCIERAS MEJORADAS ==================== */
 
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-/* Estilos para las tablas */
-.table-responsive {
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.table th {
-  background-color: #f8f9fa;
-  border-bottom: 2px solid #dee2e6;
-  font-weight: 600;
-}
-
-.table td {
-  vertical-align: middle;
-}
-
-/* Estilos para las metas financieras */
-.progress {
-  height: 20px;
-  border-radius: 10px;
-  background-color: #e9ecef;
-}
-
-.progress-bar {
-  background: linear-gradient(90deg, #28a745, #20c997);
-  border-radius: 10px;
-  transition: width 0.3s ease;
-}
-
-/* Estilos para los botones */
-.btn {
-  border-radius: 6px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-/* Estilos para los modales */
-.modal {
-  z-index: 1055;
-}
-
-.modal-dialog {
-  max-width: 500px;
-}
-
-.modal-content {
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.modal-header {
-  border-bottom: 1px solid #e9ecef;
-  background-color: #f8f9fa;
-  border-radius: 12px 12px 0 0;
-}
-
-.modal-footer {
-  border-top: 1px solid #e9ecef;
-  background-color: #f8f9fa;
-  border-radius: 0 0 12px 12px;
-}
-
-/* Estilos para los formularios */
-.form-control {
-  border-radius: 6px;
-  border: 1px solid #ced4da;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.form-control:focus {
-  border-color: #80bdff;
-  box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
-}
-
-.form-label {
-  font-weight: 500;
-  color: #495057;
-  margin-bottom: 0.5rem;
-}
-
-/* Estilos para los colores de texto */
-.text-success {
-  color: #28a745 !important;
-  font-weight: 600;
-}
-
-.text-danger {
-  color: #dc3545 !important;
-  font-weight: 600;
-}
-
-/* Estilos para las alertas */
-.alert {
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-}
-
-.alert-success {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.alert-danger {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-/* Estilos para el spinner de carga */
-.spinner-border {
-  width: 3rem;
-  height: 3rem;
-  color: #007bff;
-}
-
-/* Estilos para las cards de metas */
-.card-body {
-  padding: 1.5rem;
-}
-
-.card-title {
-  color: #495057;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-}
-
-.card-text {
-  color: #6c757d;
-  margin-bottom: 1rem;
-}
-
-/* Estilos para las tablas de ingresos y egresos */
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: rgba(0,0,0,0.02);
-}
-
-.table tbody tr:hover {
-  background-color: rgba(0,0,0,0.05);
-}
-
-/* Estilos para el header del dashboard */
-.economic-dashboard h1 {
-  color: #495057;
-  font-weight: 700;
-  margin-bottom: 0;
-}
-
-/* Estilos para los botones de acción */
-.btn-success {
-  background-color: #28a745;
-  border-color: #28a745;
-}
-
-.btn-success:hover {
-  background-color: #218838;
-  border-color: #1e7e34;
-}
-
-.btn-danger {
-  background-color: #dc3545;
-  border-color: #dc3545;
-}
-
-.btn-danger:hover {
-  background-color: #c82333;
-  border-color: #bd2130;
-}
-
-.btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
-}
-
-.btn-primary:hover {
-  background-color: #0069d9;
-  border-color: #0062cc;
-}
-
-/* Estilos para el contenedor principal */
-.container {
-  max-width: 1200px;
-}
-
-/* Estilos para las filas de resumen */
-.row.mb-4 {
-  margin-bottom: 2rem !important;
-}
-
-/* Estilos para los títulos de sección */
-h3 {
-  color: #495057;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #e9ecef;
-}
-
-/* Estilos para el acceso denegado */
-.card-body.mx-auto {
-  text-align: center;
-  padding: 3rem;
-}
-
-.card-title {
-  color: #dc3545;
-  font-weight: 700;
-}
-
-/* Estilos para los valores monetarios */
-h3.text-success,
-h3.text-danger {
-  font-size: 1.75rem;
-  font-weight: 700;
-}
-
-/* Estilos para los pequeños textos */
-small.text-muted {
-  font-size: 0.875rem;
-}
-
-/* Estilos para el botón de cerrar modal */
-.btn-close {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  opacity: 0.5;
-}
-
-.btn-close:hover {
-  opacity: 0.75;
-}
-
-/* Estilos para los selects */
-select.form-control {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  background-size: 16px 12px;
-  padding-right: 2.25rem;
-}
-
-/* Estilos para los textareas */
-textarea.form-control {
-  resize: vertical;
-  min-height: 80px;
-}
-
-/* Estilos para los inputs de fecha y hora */
-input[type="datetime-local"],
-input[type="date"] {
-  position: relative;
-}
-
-/* Estilos para los números de moneda */
-.currency {
-  font-family: 'Courier New', monospace;
-  font-weight: 600;
-}
-
-/* Estilos para las barras de progreso de metas */
-.progress-bar {
+.financial-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
-.progress-bar::after {
+.financial-card::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
-  bottom: 0;
   right: 0;
-  background-image: linear-gradient(
-    -45deg,
-    rgba(255, 255, 255, 0.2) 25%,
-    transparent 25%,
-    transparent 50%,
-    rgba(255, 255, 255, 0.2) 50%,
-    rgba(255, 255, 255, 0.2) 75%,
-    transparent 75%,
-    transparent
-  );
-  background-size: 50px 50px;
-  animation: move 2s linear infinite;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
 }
 
-@keyframes move {
-  0% {
-    background-position: 0 0;
-  }
+.financial-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Tarjeta de Ingresos */
+.income-card {
+  --gradient-start: #10b981;
+  --gradient-end: #059669;
+}
+
+.income-card .card-icon {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+/* Tarjeta de Egresos */
+.expense-card {
+  --gradient-start: #ef4444;
+  --gradient-end: #dc2626;
+}
+
+.expense-card .card-icon {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+/* Tarjeta de Balance */
+.balance-card.positive {
+  --gradient-start: #3b82f6;
+  --gradient-end: #2563eb;
+}
+
+.balance-card.positive .card-icon {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.balance-card.negative {
+  --gradient-start: #fb923c;
+  --gradient-end: #f97316;
+}
+
+.balance-card.negative .card-icon {
+  background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+}
+
+/* Iconos de las tarjetas */
+.card-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon i {
+  font-size: 24px;
+  color: #ffffff;
+}
+
+/* Contenido de las tarjetas */
+.card-content {
+  flex: 1;
+}
+
+.card-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0 0 8px 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-amount {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.income-amount {
+  color: #10b981;
+}
+
+.expense-amount {
+  color: #ef4444;
+}
+
+.balance-amount {
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Información de excedente */
+.excedent-info {
+  margin: 12px 0 0 0;
+  font-size: 0.875rem;
+  color: #059669;
+  font-weight: 600;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+
+  0%,
   100% {
-    background-position: 50px 50px;
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
   }
 }
 
-/* Estilos responsivos */
+/* ==================== METAS FINANCIERAS ==================== */
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+.goal-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.goal-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Badge de meta prioritaria */
+.priority-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+  animation: badge-glow 2s ease-in-out infinite;
+}
+
+@keyframes badge-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.6);
+  }
+}
+
+/* Visualización del gráfico circular */
+.goal-visualization {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.goal-percentage-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.percentage-number {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Contenido de la meta */
+.goal-content {
+  text-align: center;
+}
+
+.goal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.goal-description {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+/* Montos de la meta */
+.goal-amounts {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 12px;
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+  border-radius: 12px;
+}
+
+.amount-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.amount-label {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.amount-value {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.amount-value.current {
+  color: #3b82f6;
+}
+
+.amount-value.target {
+  color: #10b981;
+}
+
+.amount-divider {
+  font-size: 1.5rem;
+  color: #d1d5db;
+  font-weight: 300;
+}
+
+/* Fecha objetivo */
+.goal-deadline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.goal-deadline i {
+  color: #9ca3af;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
 @media (max-width: 768px) {
-  .economic-dashboard h1 {
+  .financial-card {
+    padding: 20px;
+  }
+
+  .card-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .card-icon i {
+    font-size: 20px;
+  }
+
+  .card-amount {
     font-size: 1.5rem;
   }
-  
-  .btn {
-    font-size: 0.875rem;
-    padding: 0.5rem 1rem;
+
+  .goal-card {
+    padding: 20px;
   }
-  
-  .card-body {
-    padding: 1rem;
+
+  .percentage-number {
+    font-size: 1.5rem;
   }
-  
-  .table-responsive {
-    font-size: 0.875rem;
+
+  .goal-amounts {
+    flex-direction: column;
+    gap: 8px;
   }
-  
-  .modal-dialog {
-    margin: 1rem;
-    max-width: calc(100% - 2rem);
+
+  .amount-divider {
+    transform: rotate(90deg);
   }
 }
 
-@media (max-width: 576px) {
-  .d-flex.justify-content-between {
-    flex-direction: column;
-    gap: 1rem;
+/* ==================== ANIMACIONES ==================== */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  .d-flex.justify-content-between > div {
-    width: 100%;
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .btn {
-    width: 100%;
-    margin-bottom: 0.5rem;
-  }
+}
+
+.financial-card,
+.goal-card {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.financial-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.financial-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.financial-card:nth-child(3) {
+  animation-delay: 0.3s;
 }

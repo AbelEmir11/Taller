@@ -3,6 +3,7 @@ import { useCountUp } from 'use-count-up';
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
 import { useNavigate } from "react-router-dom";
+import { SuccessStories } from "../component/SuccessStories";
 import heroImg from "../../img/hero-img.png";
 import fondo3 from "../../img/fondo3.jpg";
 
@@ -35,9 +36,9 @@ export const Home = () => {
                 className="aos-init aos-animate"
               >
                 En nuestro taller, nos dedicamos a ofrecer
-                 servicios de alta calidad para el mantenimiento y reparación de vehículos. 
-                 Con un equipo de técnicos expertos y un compromiso con la satisfacción 
-                 del cliente, garantizamos que tu vehículo esté en las mejores manos.
+                servicios de alta calidad para el mantenimiento y reparación de vehículos.
+                Con un equipo de técnicos expertos y un compromiso con la satisfacción
+                del cliente, garantizamos que tu vehículo esté en las mejores manos.
               </p>
               <button
                 onClick={() => navigate("/bookappointment")}
@@ -81,6 +82,9 @@ export const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Sección de Casos de Éxito */}
+      <SuccessStories />
     </>
   );
 };
