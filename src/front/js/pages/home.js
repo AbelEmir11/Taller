@@ -81,9 +81,6 @@ export const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Sección de Casos de Éxito */}
-      <SuccessStories />
     </>
   );
 };
