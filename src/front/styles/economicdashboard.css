@@ -203,6 +203,11 @@
 .goal-visualization {
   position: relative;
   margin-bottom: 20px;
+  height: 220px;
+  /* Aumentado para evitar que se corte */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .goal-percentage-overlay {

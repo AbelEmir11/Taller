@@ -24,12 +24,13 @@ import CreateAppointmentRegisteredUser from "./pages/CreateAppointmentRegistered
 import AppointmentConfirmed from "./pages/AppointmentConfirmed";
 import AccountAndAppointmentCreated from "./pages/AccountAndAppointmentCreated";
 import EconomicDashboard from "./pages/EconomicDashboard";
+import { SuccessStoriesPage } from "./pages/SuccessStoriesPage";
 
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
 
-    if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
+    if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL />;
 
     return (
         <div>
@@ -44,6 +45,7 @@ const Layout = () => {
                         <Route element={<AppointmentConfirmed />} path="/appointmentconfirmed" />
                         <Route element={<AccountAndAppointmentCreated />} path="/accountandappointmentcreated" />
                         <Route element={<Contact />} path="/contact" />
+                        <Route element={<SuccessStoriesPage />} path="/success-stories" />
                         <Route element={<Signup />} path="/signup" />
                         <Route element={<UserDashboard />} path="/userdashboard" />
                         <Route element={<UserAppointments />} path="/userappointments" />

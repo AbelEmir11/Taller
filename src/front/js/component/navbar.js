@@ -20,8 +20,8 @@ export const Navbar = () => {
       navigate('/');
     } catch (error) {
       console.error("Error al hacer logout:", error);
-  }
-};
+    }
+  };
 
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export const Navbar = () => {
       setHasAccess(false);
       setUserRole(null);
     }
-  }, [store.token,localStorage.token]);
+  }, [store.token, localStorage.token]);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -112,6 +112,15 @@ export const Navbar = () => {
                 Contacto
               </Link>
             </li>
+            <li className="nav-item">
+              <Link
+                to="/success-stories"
+                className="nav-link"
+                onClick={handleNavCollapse}
+              >
+                Casos de Éxito
+              </Link>
+            </li>
           </ul>
           <div className="d-flex">
             {userRole === null && (
@@ -121,7 +130,7 @@ export const Navbar = () => {
                   className="btn btn-primary me-2"
                   onClick={handleNavCollapse}
                 >
-                 Ingresar
+                  Ingresar
                 </Link>
                 <Link
                   to="/signup"
@@ -185,7 +194,7 @@ export const Navbar = () => {
                   className="btn btn-secondary me-2"
                   onClick={handleNavCollapse}
                 >
-                 Panel
+                  Panel
                 </Link>
                 <button onClick={handleLogout} className="btn btn-primary">
                   Salir

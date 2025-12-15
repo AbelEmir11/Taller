@@ -1,0 +1,226 @@
+/* Estilos para la página de Casos de Éxito */
+
+.success-stories-page {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 80px 20px 60px;
+    text-align: center;
+    color: white;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.95;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Stories Section */
+.stories-section {
+    padding: 40px 0;
+}
+
+/* Story Card */
+.story-card {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.story-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(102, 126, 234, 0.2);
+}
+
+/* Badge */
+.story-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+/* Before/After Container */
+.before-after-container {
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    position: relative;
+}
+
+.image-wrapper {
+    position: relative;
+}
+
+.image-label {
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: inline-block;
+}
+
+/* Placeholder Grid */
+.placeholder-grid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px 10px;
+}
+
+.placeholder-box {
+    flex: 1;
+    height: 140px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid;
+}
+
+.placeholder-box.before {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    border-color: #e67e22;
+}
+
+.placeholder-box.after {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    border-color: #27ae60;
+}
+
+.placeholder-box .icon {
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+}
+
+.placeholder-box p {
+    margin: 0;
+    font-weight: 700;
+    color: #2c3e50;
+    font-size: 0.9rem;
+}
+
+.arrow {
+    font-size: 1.8rem;
+    color: #667eea;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+/* Story Content */
+.story-content {
+    padding: 25px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.story-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 10px;
+}
+
+.story-vehicle {
+    color: #667eea;
+    font-weight: 600;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+}
+
+.story-vehicle i {
+    margin-right: 6px;
+}
+
+.story-description {
+    color: #4a5568;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    flex-grow: 1;
+    font-size: 0.95rem;
+}
+
+/* Testimonial */
+.testimonial {
+    background: linear-gradient(135deg, #f6f8fb 0%, #e9ecef 100%);
+    border-left: 4px solid #667eea;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: auto;
+}
+
+.testimonial i {
+    color: #667eea;
+    font-size: 0.9rem;
+    opacity: 0.6;
+}
+
+.testimonial p {
+    margin: 8px 0 0 0;
+    font-style: italic;
+    color: #4a5568;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* CTA Section */
+.cta-text {
+    font-size: 1.3rem;
+    color: #2d3748;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .placeholder-grid {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .arrow {
+        transform: rotate(90deg);
+    }
+
+    .placeholder-box {
+        width: 100%;
+        height: 120px;
+    }
+}

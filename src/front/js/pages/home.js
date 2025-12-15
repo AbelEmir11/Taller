@@ -3,7 +3,6 @@ import { useCountUp } from 'use-count-up';
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
 import { useNavigate } from "react-router-dom";
-import { SuccessStories } from "../component/SuccessStories";
 import heroImg from "../../img/hero-img.png";
 import fondo3 from "../../img/fondo3.jpg";
 

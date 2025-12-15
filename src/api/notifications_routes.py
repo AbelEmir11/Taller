@@ -93,8 +93,11 @@ def send_email_from_notification(notification_id):
         # Obtener datos del vehículo y servicio
         car = Car.query.get(appointment.car_id) if appointment.car_id else None
         service = Service.query.get(appointment.service_id) if appointment.service_id else None
-        # Preparar datos del email
+        
+        # Extraer valores necesarios
+        license_plate = car.license_plate if car else 'N/A'
         car_model = car.car_model if car else 'Vehículo'
+        service_name = service.name if service else 'Servicio'
         
         # Intentar enviar el email usando Resend
         print(f"📧 Intentando enviar email a {client.email}...")
