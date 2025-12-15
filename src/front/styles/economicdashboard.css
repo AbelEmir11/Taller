@@ -163,7 +163,10 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  /* Cambiado de hidden a visible */
+  min-height: 520px;
+  /* Altura mínima para evitar cortes */
 }
 
 .goal-card:hover {
